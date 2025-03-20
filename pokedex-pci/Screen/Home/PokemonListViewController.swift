@@ -139,7 +139,8 @@ extension PokemonListViewController: UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    
+        let pokemon = viewModel.filteredPokemon[indexPath.item]
+        coordinator?.showPokemonDetail(pokemon: pokemon)
     }
 }
 
