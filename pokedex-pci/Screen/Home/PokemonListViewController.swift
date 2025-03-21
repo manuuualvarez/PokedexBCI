@@ -6,7 +6,6 @@ final class PokemonListViewController: UIViewController {
     
     // MARK: - Properties:
     /// The coordinator is marked as weak to prevent retain cycles in the navigation hierarchy.
-    /// 
     /// Explanation of the memory management:
     /// 1. The AppCoordinator strongly holds the navigation controller
     /// 2. The navigation controller strongly holds this view controller
@@ -15,7 +14,7 @@ final class PokemonListViewController: UIViewController {
     /// 4. By making it weak, we break this cycle:
     ///    Coordinator -> NavigationController -> ViewController --(weak)--> Coordinator
     weak var coordinator: AppCoordinator?
-    private let viewModel: PokemonListViewModel
+    private let viewModel: any PokemonListViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components:
@@ -68,7 +67,7 @@ final class PokemonListViewController: UIViewController {
     
     // MARK: - Initialization:
     
-    init(viewModel: PokemonListViewModel) {
+    init(viewModel: any PokemonListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -88,11 +87,31 @@ final class PokemonListViewController: UIViewController {
             await viewModel.fetchPokemon()
         }
     }
+        
+    // MARK: - Bindings
+    /// Setup Combine publishers to observe the pokemon data
+    /// Note: We use [weak self] in these closures because:
+    /// 1. Combine subscribers are retained until cancelled
+    /// 2. These closures could outlive the view controller
+    /// 3. Without [weak self], we would create retain cycles
+    private func setupBindings() {
+        /// @escaping - These closures can outlive the function they were passed to (they "escape" the function's scope)
+        viewModel.statePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                self?.handleStateChange(state)
+            }
+            .store(in: &cancellables)
+        viewModel.filteredPokemonPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.collectionView.reloadData()
+            }
+            .store(in: &cancellables)
+    }
     
-    // MARK: - UI Setup
-    /// SnapKit constraints setup
-    /// Note: We don't need [weak self] in SnapKit closures because they are executed immediately
-    /// and not retained after constraint installation
+    // MARK: - Private methods:
+
     private func setupUI() {
         view.backgroundColor = .systemBackground
         view.addSubview(searchBar)
@@ -100,7 +119,9 @@ final class PokemonListViewController: UIViewController {
         view.addSubview(loadingIndicator)
         view.addSubview(progressView)
         view.addSubview(progressLabel)
-        
+        /// SnapKit constraints setup
+        /// Note: We don't need [weak self] in SnapKit closures because they are executed immediately and not retained after constraint installation
+        /// non-escaping - These are executed synchronously within the function they were passed to and don't persist after the function returns
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
@@ -123,31 +144,6 @@ final class PokemonListViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-8)
             make.centerX.equalToSuperview()
         }
-    }
-    
-    // MARK: - Private methods:
-    
-    // MARK: - Bindings
-    /// Setup Combine publishers to observe the pokemon data
-    /// Note: We use [weak self] in these closures because:
-    /// 1. Combine subscribers are retained until cancelled
-    /// 2. These closures could outlive the view controller
-    /// 3. Without [weak self], we would create retain cycles
-    private func setupBindings() {
-        // Observe the data flowL (.idle .loading(progress: Int, total: Int), .loaded([Pokemon]), .error(String))
-        viewModel.$state
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] state in
-                self?.handleStateChange(state)
-            }
-            .store(in: &cancellables)
-        // Observe changes on the search filter and the view model handle the data
-        viewModel.$filteredPokemon
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.collectionView.reloadData()
-            }
-            .store(in: &cancellables)
     }
     
     private func setupCollectionView() {
@@ -174,7 +170,7 @@ final class PokemonListViewController: UIViewController {
             
             let progressFloat = Float(progress) / Float(total)
             progressView.progress = progressFloat
-            progressLabel.text = "Loading Pokemon... \(progress)/\(total)"
+            progressLabel.text = "Loading Pokémons... \(progress)/\(total)"
             
         case .loaded:
             loadingIndicator.stopAnimating()
@@ -188,21 +184,42 @@ final class PokemonListViewController: UIViewController {
             loadingIndicator.stopAnimating()
             progressView.isHidden = true
             progressLabel.isHidden = true
-            collectionView.isHidden = true
-            collectionView.isUserInteractionEnabled = false
             
-            let alert = UIAlertController(
-                title: "Error",
-                message: message,
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: "Retry", style: .default) { [weak self] _ in
-                Task {
-                    await self?.viewModel.fetchPokemon()
-                }
-            })
-            present(alert, animated: true)
+            // Show cached data if available
+            if !viewModel.filteredPokemon.isEmpty {
+                collectionView.isHidden = false
+                collectionView.reloadData()
+                collectionView.isUserInteractionEnabled = true
+                // Show a non-blocking alert about offline mode
+                let alert = UIAlertController(
+                    title: "Offline Mode",
+                    message: "You're viewing cached data. \(message)",
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+                
+            } else {
+                showRetryAlert(message)
+            }
         }
+    }
+    
+    private func showRetryAlert(_ message: String) {
+        collectionView.isHidden = true
+        collectionView.isUserInteractionEnabled = false
+        
+        let alert = UIAlertController(
+            title: "Error",
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Retry", style: .default) { [weak self] _ in
+            Task {
+                await self?.viewModel.fetchPokemon()
+            }
+        })
+        present(alert, animated: true)
     }
 }
 
@@ -225,8 +242,13 @@ extension PokemonListViewController: UICollectionViewDataSource {
 
 extension PokemonListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if case .error = viewModel.state {
+            showRetryAlert("Is your network connection working?")
+            collectionView.deselectItem(at: indexPath, animated: true)
+            return
+        }
         // Prevent navigation while loading
-        guard case .loaded = viewModel.state else {
+        if case .loading = viewModel.state {
             collectionView.deselectItem(at: indexPath, animated: true)
             return
         }

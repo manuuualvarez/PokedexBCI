@@ -2,16 +2,16 @@ import UIKit
 import SwiftData
 
 @MainActor
-final class AppCoordinator {
+final class AppCoordinator: ObservableObject {
     
     // MARK: - Properties:
     
     private let navigationController: UINavigationController
-    private let modelContainer: ModelContainer
+    let modelContainer: ModelContainer
     
     init(navigationController: UINavigationController) throws {
         self.navigationController = navigationController
-        self.modelContainer = try ModelContainer(for: PokemonBasicCache.self)
+        self.modelContainer = try ModelContainer(for: PokemonCache.self)
     }
     
     func start() {

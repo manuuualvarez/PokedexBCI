@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         /// - Storage Location: Device's persistent storage
         /// - Invalidation: Automatic after expiration
         do {
-            let schema = Schema([PokemonBasicCache.self])
+            let schema = Schema([PokemonCache.self])
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
                 isStoredInMemoryOnly: false,

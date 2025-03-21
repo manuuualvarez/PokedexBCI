@@ -1,23 +1,16 @@
 import Foundation
 import SwiftData
 
-/// A Swift Data model that represents a cached Pokemon entity.
-/// This model is used to persist Pokemon data locally using Swift Data.
+/// A Swift Data model that represents cached Pokemon information.
+/// This model is used to persist essential Pokemon data locally using Swift Data.
 ///
-/// The cache stores essential Pokemon information including:
+/// The cache stores only the essential Pokemon information:
 /// - Basic information (id, name)
-/// - Types
 /// - Sprite URL
-/// - Abilities
-/// - Moves
 /// - Last update timestamp
+/// - Cache expiration time (15 minutes)
 ///
-/// Example usage:
-/// ```swift
-/// let cache = PokemonCache(from: pokemon)
-/// modelContext.insert(cache)
-/// try modelContext.save()
-/// ```
+/// This approach provides faster initial loading and reduces storage requirements.
 @Model
 final class PokemonCache {
     /// The unique identifier of the Pokemon
@@ -26,43 +19,57 @@ final class PokemonCache {
     /// The name of the Pokemon
     var name: String
     
-    /// Array of Pokemon types (e.g., ["fire", "flying"])
-    var types: [String]
-    
     /// URL string for the Pokemon's sprite image
     var spriteURL: String
-    
-    /// Array of Pokemon ability names
-    var abilities: [String]
-    
-    /// Array of Pokemon move names
-    var moves: [String]
     
     /// Timestamp of when this cache entry was last updated
     var lastUpdated: Date
     
+    /// The time when this cache entry expires (15 minutes from lastUpdated)
+    var expiresAt: Date
+        
     /// Creates a new cache entry from a Pokemon model
     /// - Parameter pokemon: The Pokemon model to cache
     init(from pokemon: Pokemon) {
         self.id = pokemon.id
         self.name = pokemon.name
-        self.types = pokemon.types.map { $0.type.name }
         self.spriteURL = pokemon.sprites.frontDefault
-        self.abilities = pokemon.abilities.map { $0.ability.name }
-        self.moves = pokemon.moves.map { $0.move.name }
         self.lastUpdated = Date()
+        self.expiresAt = Date().addingTimeInterval(15 * 60) // 15 minutes
     }
     
-    /// Converts the cached data back into a Pokemon model
-    /// - Returns: A Pokemon model with the cached data
-    func toPokemon() -> Pokemon {
+    /// Converts the cached data back into a basic Pokemon model
+    /// - Returns: A Pokemon model with only basic information
+    func convertAsPokemon() -> Pokemon {
         Pokemon(
             id: id,
             name: name,
-            types: types.map { Pokemon.PokemonType(slot: 1, type: .init(name: $0)) },
+            types: [],
             sprites: .init(frontDefault: spriteURL),
-            abilities: abilities.map { Pokemon.Ability(ability: .init(name: $0), isHidden: false, slot: 1) },
-            moves: moves.map { Pokemon.Move(move: .init(name: $0)) }
+            abilities: [],
+            moves: []
         )
+    }
+    
+    /// Checks if the cache entry is still valid
+    /// - Returns: true if the cache hasn't expired, false otherwise
+    var isValid: Bool {
+        // Check that we have a non-zero ID
+        guard id > 0 else { return false }
+        
+        // Check that we have a non-empty name
+        guard !name.isEmpty else { return false }
+        
+        // Check that we have a non-empty sprite URL
+        guard !spriteURL.isEmpty else { return false }
+        
+        // Check that lastUpdated is not in the future
+        guard lastUpdated <= Date() else { return false }
+        
+        // Check that expiresAt is after lastUpdated
+        guard expiresAt > lastUpdated else { return false }
+        
+        // Check that the cache hasn't expired
+        return Date() < expiresAt
     }
 } 

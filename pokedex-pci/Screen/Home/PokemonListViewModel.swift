@@ -9,12 +9,49 @@ import Foundation
 import Combine
 import SwiftData
 
+/// Protocol defining the interface for PokemonListViewModel
+@MainActor
+protocol PokemonListViewModelProtocol: ObservableObject {
+    // MARK: - PROPERTIES
+    var state: PokemonListState { get }
+    var filteredPokemon: [Pokemon] { get }
+    var searchText: String { get set }
+    
+    // MARK: - Published Publishers
+    var statePublisher: Published<PokemonListState>.Publisher { get }
+    var filteredPokemonPublisher: Published<[Pokemon]>.Publisher { get }
+    var searchTextPublisher: Published<String>.Publisher { get }
+    
+    // MARK: - Methods
+    func fetchPokemon() async
+    func fetchPokemonDetails(id: Int) async throws -> Pokemon
+    func setPokemon(_ pokemon: [Pokemon])
+    func setState(_ state: PokemonListState)
+    func cachePokemon(_ pokemon: [Pokemon]) async
+    func loadCachedPokemon() async
+}
+
 /// Represents the different states of the Pokemon list
-enum PokemonListState {
+enum PokemonListState: Equatable {
     case idle
     case loading(progress: Int, total: Int)
     case loaded([Pokemon])
     case error(String)
+    
+    static func == (lhs: PokemonListState, rhs: PokemonListState) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle):
+            return true
+        case (.loading(let progress1, let total1), .loading(let progress2, let total2)):
+            return progress1 == progress2 && total1 == total2
+        case (.loaded(let pokemon1), .loaded(let pokemon2)):
+            return pokemon1 == pokemon2
+        case (.error(let message1), .error(let message2)):
+            return message1 == message2
+        default:
+            return false
+        }
+    }
 }
 
 /// A view model that manages the Pokemon list, including caching and network operations.
@@ -33,7 +70,7 @@ enum PokemonListState {
 /// - Automatic cache refresh after 15 minutes
 ///
 @MainActor
-final class PokemonListViewModel {
+final class PokemonListViewModel: PokemonListViewModelProtocol {
     
     // MARK: - Published Properties:
     /// These properties are observed using Combine's @Published property wrapper
@@ -42,21 +79,133 @@ final class PokemonListViewModel {
     @Published private(set) var filteredPokemon: [Pokemon] = []
     @Published var searchText: String = ""
     
+    // MARK: - Published Publishers:
+    var statePublisher: Published<PokemonListState>.Publisher { $state }
+    var filteredPokemonPublisher: Published<[Pokemon]>.Publisher { $filteredPokemon }
+    var searchTextPublisher: Published<String>.Publisher { $searchText }
+    
     // MARK: - Private Properties:
     
-    private var pokemon: [Pokemon] = []
+    private(set) var pokemon: [Pokemon] = []
     private var cancellables = Set<AnyCancellable>()
     private let modelContainer: ModelContainer
+    private let networkManager: NetworkManagerProtocol
+    private let cacheLoadingStrategy: CacheLoadingStrategy
     private var isLoading = false
     
     // MARK: - Initialization:
     
-    init(modelContainer: ModelContainer) {
+    init(modelContainer: ModelContainer, 
+         networkManager: NetworkManagerProtocol = NetworkManager(),
+         cacheLoadingStrategy: CacheLoadingStrategy = DefaultCacheLoadingStrategy()
+    ) {
         self.modelContainer = modelContainer
+        self.networkManager = networkManager
+        self.cacheLoadingStrategy = cacheLoadingStrategy
         setupBindings()
-        Task {
-            await loadCachedPokemon()
+        // Use the strategy to decide whether to load cache
+        if cacheLoadingStrategy.shouldLoadCacheOnInit {
+            Task {
+                await loadCachedPokemon()
+            }
         }
+    }
+    
+    // MARK: - Protocol Methods
+    
+    /// Sets the Pokemon array and updates the filtered array
+    /// - Parameter pokemon: The array of Pokemon to set
+    func setPokemon(_ pokemon: [Pokemon]) {
+        self.pokemon = pokemon
+        self.filteredPokemon = pokemon
+    }
+    
+    /// Sets the view model's state
+    /// - Parameter state: The new state to set
+    func setState(_ state: PokemonListState) {
+        self.state = state
+    }
+    
+    /// Caches Pokemon data for faster loading
+    /// - Parameter pokemon: Array of Pokemon to cache
+    func cachePokemon(_ pokemon: [Pokemon]) async {
+        guard !pokemon.isEmpty else { return }
+        
+        do {
+            let descriptor = FetchDescriptor<PokemonCache>()
+            let existingCache = try modelContainer.mainContext.fetch(descriptor)
+            let validCache = existingCache.filter { $0.isValid }
+            
+            if !validCache.isEmpty {
+                print("✅ Valid cache exists, skipping cache update")
+                return
+            }
+            print("💾 Starting basic cache update...")
+            // Clear expired cache
+            existingCache.forEach { modelContainer.mainContext.delete($0) }
+            print("🗑️ Cleared \(existingCache.count) expired cache entries")
+            // Add new cache entries
+            pokemon.forEach { pokemon in
+                let cache = PokemonCache(from: pokemon)
+                modelContainer.mainContext.insert(cache)
+            }
+            try modelContainer.mainContext.save()
+            print("✅ Successfully cached \(pokemon.count) Pokemon")
+            print("📅 Cache updated at: \(Date().formatted())")
+            print("⏰ Cache expires at: \(Date().addingTimeInterval(15 * 60).formatted())")
+        } catch {
+            print("❌ Error managing cache: \(error.localizedDescription)")
+        }
+    }
+    
+    /// Loads Pokemon from cache if available and valid
+    /// If the cache is invalid or expired, fetches fresh data from the network
+    func loadCachedPokemon() async {
+        guard !isLoading else { 
+            print("⚠️ Already loading Pokemon data")
+            return 
+        }
+        
+        isLoading = true
+        // Set the loading state
+        self.setState(.loading(progress: 0, total: 0))
+        
+        do {
+            var cacheDescriptor = FetchDescriptor<PokemonCache>()
+            cacheDescriptor.sortBy = [SortDescriptor(\PokemonCache.id, order: .forward)]
+            let cacheEntries = try modelContainer.mainContext.fetch(cacheDescriptor)
+            
+            let validCacheEntries = cacheEntries.filter { $0.isValid }
+            if !validCacheEntries.isEmpty {
+                handleValidCache(validCacheEntries)
+                // isLoading is set to false in handleValidCache() method
+                return
+            }
+            
+            // If we reach here, there's no valid cache
+            // Must set isLoading to false before calling fetchPokemon
+            isLoading = false
+            await fetchPokemon()
+            
+        } catch {
+            print("❌ loadCachedPokemon() - Error: \(error.localizedDescription)")
+            isLoading = false
+            await fetchPokemon()
+        }
+    }
+    
+    /// Helper method to handle valid cache entries
+    private func handleValidCache(_ validCache: [PokemonCache]) {
+        print("✅ loadCachedPokemon() - Using \(validCache.count) valid cached entries")
+        // Convert cache to Pokemon objects
+        let cachedPokemon = validCache.map { $0.convertAsPokemon() }
+        // Update properties first
+        self.pokemon = cachedPokemon
+        self.filteredPokemon = cachedPokemon
+        // Then update state
+        self.setState(.loaded(cachedPokemon))
+        isLoading = false
+        print("✅ loadCachedPokemon() - Successfully completed with \(cachedPokemon.count) Pokemon from cache")
     }
         
     // MARK: - Search Bindings:
@@ -96,92 +245,19 @@ final class PokemonListViewModel {
         }
     }
     
-    // MARK: - Private Methods:
-    
-    private func loadCachedPokemon() async {
-        guard !isLoading else { 
-            print("⚠️ Already loading Pokemon data")
-            return 
-        }
-        isLoading = true
-        print("🔍 Checking for cached Pokemon data...")
-        /// FetchDescriptor is a SwiftData type that defines how to fetch data from the persistent store.
-        /// It's similar to NSFetchRequest in Core Data, allowing you to:
-        /// - Retrieve specific model types (like PokemonBasicCache)
-        /// - Define sorting and filtering criteria
-        /// - Configure fetch limits and offsets
-        var descriptor = FetchDescriptor<PokemonBasicCache>()
-        // Sort by Pokemon ID in descending order (lowest to lowest)
-        descriptor.sortBy = [SortDescriptor(\PokemonBasicCache.id, order: .forward)]
-        do {
-            let cachedPokemon = try modelContainer.mainContext.fetch(descriptor)
-            if !cachedPokemon.isEmpty {
-                let validCache = cachedPokemon.filter { $0.isValid }
-                if !validCache.isEmpty {
-                    print("✅ Found \(validCache.count) valid cached Pokemon")
-                    print("📅 Last updated: \(validCache.first?.lastUpdated.formatted() ?? "Unknown")")
-                    print("⏰ Expires at: \(validCache.first?.expiresAt.formatted() ?? "Unknown")")
-                    pokemon = validCache.map { $0.toBasicPokemon() }
-                    filteredPokemon = pokemon
-                    state = .loaded(pokemon)
-                    isLoading = false
-                    return
-                }
-            }
-            // Only fetch if we don't have valid cache
-            print("❌ No valid cache found, fetching fresh data...")
-            isLoading = false
-            await fetchPokemon()
-        } catch {
-            print("❌ Error loading cached Pokemon: \(error)")
-            isLoading = false
-            await fetchPokemon()
-        }
-    }
-    
-    private func cacheBasicPokemon(_ pokemon: [Pokemon]) async {
-        guard !pokemon.isEmpty else { return }
-        
-        // Check if we already have valid cache
-        let descriptor = FetchDescriptor<PokemonBasicCache>()
-        do {
-            let existingCache = try modelContainer.mainContext.fetch(descriptor)
-            let validCache = existingCache.filter { $0.isValid }
-            
-            if !validCache.isEmpty {
-                print("✅ Valid cache exists, skipping cache update")
-                return
-            }
-            print("💾 Starting basic cache update...")
-            // Clear expired cache
-            existingCache.forEach { modelContainer.mainContext.delete($0) }
-            print("🗑️ Cleared \(existingCache.count) expired cache entries")
-            // Add new cache entries
-            pokemon.forEach { pokemon in
-                let cache = PokemonBasicCache(from: pokemon)
-                modelContainer.mainContext.insert(cache)
-            }
-            try modelContainer.mainContext.save()
-            print("✅ Successfully cached \(pokemon.count) Pokemon")
-            print("📅 Cache updated at: \(Date().formatted())")
-            print("⏰ Cache expires at: \(Date().addingTimeInterval(15 * 60).formatted())")
-        } catch {
-            print("❌ Error managing cache: \(error.localizedDescription)")
-        }
-    }
-    
     // MARK: - Public Methods:
-    
+    /// Fetches Pokemon data from the network
     func fetchPokemon() async {
         guard !isLoading else {
             print("⚠️ Network fetch already in progress")
             return
         }
-        state = .loading(progress: 0, total: 151)
+        
         isLoading = true
+        state = .loading(progress: 0, total: 151)
         
         do {
-            let response = try await NetworkManager.shared.fetchPokemonList()
+            let response = try await networkManager.fetchPokemonList()
             print("📥 Fetched Pokemon list with \(response.results.count) entries")
     
             var loadedPokemon: [Pokemon] = []
@@ -189,42 +265,39 @@ final class PokemonListViewModel {
             
             for (index, _ ) in response.results.enumerated() {
                 do {
-                    let pokemon = try await NetworkManager.shared.fetchPokemonDetail(id: index + 1)
+                    let pokemon = try await networkManager.fetchPokemonDetail(id: index + 1)
                     loadedPokemon.append(pokemon)
-                    // Update loading progress
                     let progress = loadedPokemon.count
                     state = .loading(progress: progress, total: total)
                 } catch {
                     print("❌ Error fetching Pokemon #\(index + 1): \(error.localizedDescription)")
                 }
             }
-            // Sort Pokemon by ID (keep the same order as he cached data)
             loadedPokemon.sort { $0.id < $1.id }
-            // Update the main Pokemon arrays
             pokemon = loadedPokemon
             filteredPokemon = loadedPokemon
             
             if loadedPokemon.isEmpty {
-                print("⚠️ No Pokemon were loaded")
                 state = .error("Failed to load Pokemon data")
             } else {
                 print("🎉 Successfully loaded \(loadedPokemon.count) Pokemon")
                 state = .loaded(loadedPokemon)
-                // Only update cache if we have new data
-                await cacheBasicPokemon(loadedPokemon)
+                await cachePokemon(loadedPokemon)
             }
         } catch {
             print("❌ Network error: \(error.localizedDescription)")
             state = .error(error.localizedDescription)
         }
+        
         isLoading = false
     }
     
     /// Fetches detailed Pokemon information for a specific Pokemon
     /// - Parameter id: The Pokemon's ID
     /// - Returns: A Pokemon model with full details
+    /// - Note: Tested in `testFetchPokemonDetails` and `testFetchPokemonDetailsFailure`
     func fetchPokemonDetails(id: Int) async throws -> Pokemon {
-        print("\n🔍 Fetching detailed information for Pokemon #\(id)...")
-        return try await NetworkManager.shared.fetchPokemonDetail(id: id)
+        print("🔍 Fetching detailed information for Pokemon #\(id)...")
+        return try await networkManager.fetchPokemonDetail(id: id)
     }
 }
