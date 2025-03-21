@@ -9,24 +9,25 @@ import Foundation
 import Combine
 
 final class PokemonDetailViewModel {
+    
+    // MARK: - Private properties:
+    
     private let pokemon: Pokemon
     @Published private(set) var state: PokemonListState = .idle
+    
+    // MARK: - Initializers:
     
     init(pokemon: Pokemon) {
         self.pokemon = pokemon
     }
     
-    var name: String {
-        pokemon.name.capitalized
-    }
+    // MARK: Computed Properties:
     
-    var imageURL: URL? {
-        URL(string: pokemon.sprites.frontDefault)
-    }
+    var name: String { pokemon.name.capitalized }
     
-    var types: String {
-        pokemon.types.map { $0.type.name.capitalized }.joined(separator: " / ")
-    }
+    var imageURL: URL? { URL(string: pokemon.sprites.frontDefault) }
+    
+    var types: String { pokemon.types.map { $0.type.name.capitalized }.joined(separator: " / ") }
     
     var abilities: String {
         pokemon.abilities

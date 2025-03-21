@@ -1,13 +1,23 @@
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class PokemonCell: UICollectionViewCell {
+    static let identifier = "PokemonCell"
+    
+    // MARK: - UI Components
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .secondarySystemBackground
+        view.layer.cornerRadius = 10
+        view.clipsToBounds = true
+        return view
+    }()
+    
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .systemGray6
-        imageView.layer.cornerRadius = 8
-        imageView.clipsToBounds = true
+        imageView.backgroundColor = .clear
         return imageView
     }()
     
@@ -18,7 +28,7 @@ final class PokemonCell: UICollectionViewCell {
         return label
     }()
     
-    private let typeLabel: UILabel = {
+    private let idLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 14)
@@ -26,6 +36,9 @@ final class PokemonCell: UICollectionViewCell {
         return label
     }()
     
+    private var currentImageURL: URL?
+    
+    // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -35,21 +48,21 @@ final class PokemonCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - UI Setup
     private func setupUI() {
-        contentView.backgroundColor = .systemBackground
-        contentView.layer.cornerRadius = 12
-        contentView.layer.shadowColor = UIColor.black.cgColor
-        contentView.layer.shadowOpacity = 0.1
-        contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        contentView.layer.shadowRadius = 4
+        contentView.addSubview(containerView)
+        containerView.addSubview(imageView)
+        containerView.addSubview(nameLabel)
+        containerView.addSubview(idLabel)
         
-        contentView.addSubview(imageView)
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(typeLabel)
+        containerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(4)
+        }
         
         imageView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(contentView.snp.width)
+            make.top.equalToSuperview().inset(8)
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(contentView.snp.width).multipliedBy(0.6)
         }
         
         nameLabel.snp.makeConstraints { make in
@@ -57,32 +70,46 @@ final class PokemonCell: UICollectionViewCell {
             make.leading.trailing.equalToSuperview().inset(8)
         }
         
-        typeLabel.snp.makeConstraints { make in
+        idLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(4)
             make.leading.trailing.equalToSuperview().inset(8)
             make.bottom.equalToSuperview().inset(8)
         }
     }
     
+    // MARK: - Configuration
     func configure(with pokemon: Pokemon) {
         nameLabel.text = pokemon.name.capitalized
-        typeLabel.text = pokemon.types.map { $0.type.name.capitalized }.joined(separator: " / ")
-        
-        if let url = URL(string: pokemon.sprites.frontDefault) {
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                if let data = data, let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.imageView.image = image
-                    }
-                }
-            }.resume()
+        // Use formatt to show 3 digits with a # prefix
+        idLabel.text = String(format: "#%03d", pokemon.id)
+        // Use KingFisher package to handle the image cache.
+        if let url = URL(string: pokemon.sprites.frontDefault), currentImageURL != url {
+            currentImageURL = url
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(
+                with: url,
+                options: [
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
+                ]
+            )
         }
     }
     
+    /// Prepares a cell for reuse in a collection view by cleaning up resources and resetting its state.
+    /// This method is called by the collection view when a cell is about to be reused for a different index path.
+    /// 
+    /// The cleanup process includes:
+    /// - Canceling any ongoing Kingfisher image download to prevent unnecessary network requests
+    /// - Clearing the image view to prevent showing stale images
+    /// - Resetting text labels to prevent showing incorrect data
+    /// - Clearing the current image URL to ensure proper image loading for the new item
     override func prepareForReuse() {
         super.prepareForReuse()
+        imageView.kf.cancelDownloadTask()
         imageView.image = nil
         nameLabel.text = nil
-        typeLabel.text = nil
+        idLabel.text = nil
+        currentImageURL = nil
     }
 }

@@ -8,10 +8,16 @@
 import UIKit
 import SnapKit
 import Combine
+import Kingfisher
 
 final class PokemonDetailViewController: UIViewController {
+    
+    // MARK: - Private Properties:
+    
     private let viewModel: PokemonDetailViewModel
     private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: UI - Components:
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -24,16 +30,21 @@ final class PokemonDetailViewController: UIViewController {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .systemGray6
-        imageView.layer.cornerRadius = 16
-        imageView.clipsToBounds = true
+        imageView.backgroundColor = .clear
         return imageView
+    }()
+    
+    private let loadingView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        return indicator
     }()
     
     private let typeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.text = "Loading..."
         return label
     }()
     
@@ -48,6 +59,7 @@ final class PokemonDetailViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 16)
+        label.text = "Loading..."
         return label
     }()
     
@@ -62,8 +74,11 @@ final class PokemonDetailViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 16)
+        label.text = "Loading..."
         return label
     }()
+    
+    // MARK: - Initializers :
     
     init(viewModel: PokemonDetailViewModel) {
         self.viewModel = viewModel
@@ -74,20 +89,42 @@ final class PokemonDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle:
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        configureUI()
+        configureWithViewModel()
+    }
+    
+    // MARK: - Private Methods:
+    
+    private func configureWithViewModel() {
+        title = viewModel.name
+        typeLabel.text = viewModel.types
+        abilitiesLabel.text = viewModel.abilities
+        movesLabel.text = viewModel.moves
+        // Handle image cache with Kingfisher
+        if let url = viewModel.imageURL {
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(
+                with: url,
+                options: [
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
+                ]
+            )
+        }
     }
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = viewModel.name
         
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
         
         containerView.addSubview(imageView)
+        containerView.addSubview(loadingView)
         containerView.addSubview(typeLabel)
         containerView.addSubview(abilitiesTitleLabel)
         containerView.addSubview(abilitiesLabel)
@@ -107,6 +144,10 @@ final class PokemonDetailViewController: UIViewController {
             make.top.equalToSuperview().offset(16)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(200)
+        }
+        
+        loadingView.snp.makeConstraints { make in
+            make.center.equalTo(imageView)
         }
         
         typeLabel.snp.makeConstraints { make in
@@ -133,22 +174,6 @@ final class PokemonDetailViewController: UIViewController {
             make.top.equalTo(movesTitleLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(16)
-        }
-    }
-    
-    private func configureUI() {
-        typeLabel.text = viewModel.types
-        abilitiesLabel.text = viewModel.abilities
-        movesLabel.text = viewModel.moves
-        
-        if let url = viewModel.imageURL {
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                if let data = data, let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.imageView.image = image
-                    }
-                }
-            }.resume()
         }
     }
 }

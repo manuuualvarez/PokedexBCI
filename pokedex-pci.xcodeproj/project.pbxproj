@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FE538B9B2D8CC07300F1A473 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FE538B9A2D8CC07300F1A473 /* SnapKit */; };
+		FE538BD32D8CE49500F1A473 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FE538BD22D8CE49500F1A473 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE538BD32D8CE49500F1A473 /* Kingfisher in Frameworks */,
 				FE538B9B2D8CC07300F1A473 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +133,7 @@
 			name = "pokedex-pci";
 			packageProductDependencies = (
 				FE538B9A2D8CC07300F1A473 /* SnapKit */,
+				FE538BD22D8CE49500F1A473 /* Kingfisher */,
 			);
 			productName = "pokedex-pci";
 			productReference = FE538B612D8CBF2200F1A473 /* pokedex-pci.app */;
@@ -216,6 +219,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FE538B992D8CC07300F1A473 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				FE538BD12D8CE49500F1A473 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FE538B622D8CBF2200F1A473 /* Products */;
@@ -586,6 +590,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		FE538BD12D8CE49500F1A473 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.3.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -593,6 +605,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FE538B992D8CC07300F1A473 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		FE538BD22D8CE49500F1A473 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE538BD12D8CE49500F1A473 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
