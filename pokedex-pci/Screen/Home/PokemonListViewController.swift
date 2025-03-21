@@ -161,12 +161,16 @@ final class PokemonListViewController: UIViewController {
             progressView.isHidden = true
             progressLabel.isHidden = true
             collectionView.isHidden = true
+            // Disable tap before the data is loaded
+            collectionView.isUserInteractionEnabled = false
             
         case .loading(let progress, let total):
             loadingIndicator.stopAnimating()
             progressView.isHidden = false
             progressLabel.isHidden = false
             collectionView.isHidden = false
+            // Allows tap after the data is loaded
+            collectionView.isUserInteractionEnabled = false
             
             let progressFloat = Float(progress) / Float(total)
             progressView.progress = progressFloat
@@ -177,6 +181,7 @@ final class PokemonListViewController: UIViewController {
             progressView.isHidden = true
             progressLabel.isHidden = true
             collectionView.isHidden = false
+            collectionView.isUserInteractionEnabled = true
             collectionView.reloadData()
             
         case .error(let message):
@@ -184,6 +189,7 @@ final class PokemonListViewController: UIViewController {
             progressView.isHidden = true
             progressLabel.isHidden = true
             collectionView.isHidden = true
+            collectionView.isUserInteractionEnabled = false
             
             let alert = UIAlertController(
                 title: "Error",
@@ -219,6 +225,12 @@ extension PokemonListViewController: UICollectionViewDataSource {
 
 extension PokemonListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // Prevent navigation while loading
+        guard case .loaded = viewModel.state else {
+            collectionView.deselectItem(at: indexPath, animated: true)
+            return
+        }
+        
         let pokemon = viewModel.filteredPokemon[indexPath.item]
         coordinator?.showPokemonDetail(pokemon: pokemon)
     }
