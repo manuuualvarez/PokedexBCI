@@ -39,9 +39,9 @@ class MockNetworkManager: NetworkManagerProtocol {
             id: id,
             name: "pokemon\(id)",
             types: [
-                PokemonType(
+                PokemonTypes(
                     slot: 1,
-                    type: PokemonType.PokemonType(name: "grass")
+                    type: PokemonType(name: "grass")
                 )
             ],
             sprites: Sprites(frontDefault: "https://example.com/\(id).png"),
@@ -53,7 +53,10 @@ class MockNetworkManager: NetworkManagerProtocol {
                 )
             ],
             moves: [
-                Move(move: Move.MoveDetail(name: "move\(id)"))
+                Move(move: MoveDetail(name: "move\(id)"))
+            ],
+            stats: [
+                Stat(baseStat: 100, effort: 0, stat: StatDetail(name: "defense", url: "https://pokeapi.co/api/v2/stat/3/"))
             ]
         )
     }

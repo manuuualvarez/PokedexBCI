@@ -47,7 +47,8 @@ final class PokemonCache {
             types: [],
             sprites: .init(frontDefault: spriteURL),
             abilities: [],
-            moves: []
+            moves: [],
+            stats: []
         )
     }
     

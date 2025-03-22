@@ -116,9 +116,9 @@ class PokemonListViewModelTests: XCTestCase {
             id: id,
             name: "pokemon\(id)",
             types: [
-                PokemonType(
+                PokemonTypes(
                     slot: 1,
-                    type: PokemonType.PokemonType(name: "grass")
+                    type: PokemonType(name: "grass")
                 )
             ],
             sprites: Sprites(frontDefault: "https://example.com/\(id).png"),
@@ -130,8 +130,9 @@ class PokemonListViewModelTests: XCTestCase {
                 )
             ],
             moves: [
-                Move(move: Move.MoveDetail(name: "move\(id)"))
-            ]
+                Move(move: MoveDetail(name: "move\(id)"))
+            ],
+            stats: []
         )
     }
     

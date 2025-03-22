@@ -14,73 +14,31 @@ final class PokemonDetailViewController: UIViewController {
     
     // MARK: - Private Properties:
     
-    private let viewModel: PokemonDetailViewModel
+    private let viewModel: PokemonDetailViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
     
-    // MARK: UI - Components:
+    // MARK: - UI Components:
     
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = true
         return scrollView
     }()
     
-    private let containerView = UIView()
-    
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .clear
-        return imageView
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        return view
     }()
     
-    private let loadingView: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .large)
-        indicator.hidesWhenStopped = true
-        return indicator
-    }()
+    private lazy var headerView = PokemonHeaderView(backgroundColor: viewModel.colorName.uiColor)
+    private lazy var statsView = StatsSectionView(title: "Base Stats")
+    private lazy var abilitiesView = AbilitiesSectionView(title: "Abilities")
+    private lazy var movesView = MovesSectionView(title: "Moves")
     
-    private let typeLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 18, weight: .medium)
-        label.text = "Loading..."
-        return label
-    }()
+    // MARK: - Initializers:
     
-    private let abilitiesTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Abilities"
-        label.font = .systemFont(ofSize: 20, weight: .bold)
-        return label
-    }()
-    
-    private let abilitiesLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 16)
-        label.text = "Loading..."
-        return label
-    }()
-    
-    private let movesTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Moves"
-        label.font = .systemFont(ofSize: 20, weight: .bold)
-        return label
-    }()
-    
-    private let movesLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 16)
-        label.text = "Loading..."
-        return label
-    }()
-    
-    // MARK: - Initializers :
-    
-    init(viewModel: PokemonDetailViewModel) {
+    init(viewModel: PokemonDetailViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -89,91 +47,115 @@ final class PokemonDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Lifecycle:
+    // MARK: - Lifecycle Methods:
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        configureWithViewModel()
+        configureUI()
+        setupNavigationBar()
+        edgesForExtendedLayout = .top
     }
     
-    // MARK: - Private Methods:
-    
-    private func configureWithViewModel() {
-        title = viewModel.name
-        typeLabel.text = viewModel.types
-        abilitiesLabel.text = viewModel.abilities
-        movesLabel.text = viewModel.moves
-        // Handle image cache with Kingfisher
-        if let url = viewModel.imageURL {
-            imageView.kf.indicatorType = .activity
-            imageView.kf.setImage(
-                with: url,
-                options: [
-                    .transition(.fade(0.2)),
-                    .cacheOriginalImage
-                ]
-            )
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        setNeedsStatusBarAppearanceUpdate()
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    // MARK: - UI Setup
     
     private func setupUI() {
-        view.backgroundColor = .systemBackground
-        
+        // Set main view background color to match Pokemon's type color
+        view.backgroundColor = viewModel.colorName.uiColor
         view.addSubview(scrollView)
-        scrollView.addSubview(containerView)
         
-        containerView.addSubview(imageView)
-        containerView.addSubview(loadingView)
-        containerView.addSubview(typeLabel)
-        containerView.addSubview(abilitiesTitleLabel)
-        containerView.addSubview(abilitiesLabel)
-        containerView.addSubview(movesTitleLabel)
-        containerView.addSubview(movesLabel)
+        scrollView.backgroundColor = .clear
+        scrollView.addSubview(contentView)
+        
+        // Add components to view hierarchy
+        contentView.backgroundColor = .clear
+        contentView.addSubview(headerView)
+        contentView.addSubview(statsView)
+        contentView.addSubview(abilitiesView)
+        contentView.addSubview(movesView)
+        
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        let safeAreaTop = view.safeAreaInsets.top
         
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        containerView.snp.makeConstraints { make in
+        contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.width.equalToSuperview()
+            make.width.equalTo(view)
         }
         
-        imageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(200)
+        // Header constraints - extend to cover status bar
+        headerView.snp.makeConstraints { make in
+            // Use a negative top value to extend under status bar
+            make.top.equalToSuperview().offset(-safeAreaTop)
+            make.leading.trailing.equalToSuperview()
+            // Adjust height to include status bar area
+            make.height.equalTo(300 + safeAreaTop)
         }
         
-        loadingView.snp.makeConstraints { make in
-            make.center.equalTo(imageView)
-        }
+        // Configure header view internal constraints
+        headerView.setupConstraints(safeAreaTop: safeAreaTop)
         
-        typeLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(16)
+        statsView.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom).offset(-15)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
-        abilitiesTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(typeLabel.snp.bottom).offset(24)
+        abilitiesView.snp.makeConstraints { make in
+            make.top.equalTo(statsView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
-        abilitiesLabel.snp.makeConstraints { make in
-            make.top.equalTo(abilitiesTitleLabel.snp.bottom).offset(8)
+        movesView.snp.makeConstraints { make in
+            make.top.equalTo(abilitiesView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().inset(24)
         }
-        
-        movesTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(abilitiesLabel.snp.bottom).offset(24)
-            make.leading.trailing.equalToSuperview().inset(16)
-        }
-        
-        movesLabel.snp.makeConstraints { make in
-            make.top.equalTo(movesTitleLabel.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().inset(16)
-        }
+    }
+    
+    private func setupNavigationBar() {
+        navigationItem.largeTitleDisplayMode = .never
+    }
+    
+    // MARK: - Configuration
+    
+    private func configureUI() {
+        // Configure header view
+        headerView.configure(
+            id: "#\(viewModel.id)",
+            name: viewModel.name,
+            imageURL: viewModel.imageURL,
+            types: viewModel.typeNames,
+            typeColor: viewModel.colorName.uiColor,
+            onBack: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
+        )
+        // Configure stats view
+        statsView.configure(with: viewModel.stats)
+        // Configure abilities view
+        abilitiesView.configure(with: viewModel.abilitiesArray)
+        // Configure moves view
+        movesView.configure(with: viewModel.movesArray)
     }
 }

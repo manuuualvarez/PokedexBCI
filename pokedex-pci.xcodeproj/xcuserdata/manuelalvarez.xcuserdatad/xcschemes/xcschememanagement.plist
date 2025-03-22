@@ -4,10 +4,33 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>SnapKitPlayground (Playground).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>pokedex-pci.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>FE538B602D8CBF2200F1A473</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FE538B762D8CBF2300F1A473</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FE538B802D8CBF2300F1A473</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

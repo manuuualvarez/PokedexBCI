@@ -12,6 +12,7 @@ final class AppCoordinator: ObservableObject {
     init(navigationController: UINavigationController) throws {
         self.navigationController = navigationController
         self.modelContainer = try ModelContainer(for: PokemonCache.self)
+        navigationController.navigationBar.backgroundColor = .red
     }
     
     func start() {

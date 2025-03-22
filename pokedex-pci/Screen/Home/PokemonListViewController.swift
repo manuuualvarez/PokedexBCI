@@ -165,8 +165,8 @@ final class PokemonListViewController: UIViewController {
             progressView.isHidden = false
             progressLabel.isHidden = false
             collectionView.isHidden = false
-            // Allows tap after the data is loaded
-            collectionView.isUserInteractionEnabled = false
+            // Allow user scroll when the data is loading, but the delegate method avoid the user tap on the cell
+            collectionView.isUserInteractionEnabled = true
             
             let progressFloat = Float(progress) / Float(total)
             progressView.progress = progressFloat
