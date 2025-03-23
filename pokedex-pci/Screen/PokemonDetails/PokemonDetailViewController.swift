@@ -110,8 +110,8 @@ final class PokemonDetailViewController: UIViewController {
             // Use a negative top value to extend under status bar
             make.top.equalToSuperview().offset(-safeAreaTop)
             make.leading.trailing.equalToSuperview()
-            // Adjust height to include status bar area
-            make.height.equalTo(300 + safeAreaTop)
+            // Use minimum height instead of fixed height to allow content to fit
+            make.height.greaterThanOrEqualTo(300 + safeAreaTop).priority(750)
         }
         
         // Configure header view internal constraints

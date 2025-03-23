@@ -166,7 +166,7 @@ final class PokemonHeaderView: UIView {
         pokemonImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(safeAreaTop + 70)
-            make.width.height.equalTo(150)
+            make.width.height.lessThanOrEqualTo(150)
         }
         
         loadingIndicator.snp.makeConstraints { make in
@@ -177,7 +177,7 @@ final class PokemonHeaderView: UIView {
             make.top.equalTo(pokemonImageView.snp.bottom).offset(12)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(50)
-            make.height.greaterThanOrEqualTo(44)
+            make.height.equalTo(44).priority(750)
             make.bottom.equalTo(nameLabel).offset(8)
         }
         
@@ -190,13 +190,13 @@ final class PokemonHeaderView: UIView {
         typeContainerView.snp.makeConstraints { make in
             make.top.equalTo(nameLabelBackground.snp.bottom).offset(16)
             make.centerX.equalToSuperview()
-            make.height.equalTo(32)
-            make.bottom.equalToSuperview().inset(16)
+            make.bottom.lessThanOrEqualToSuperview().inset(16).priority(999)
         }
         
         typeStackView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.height.equalToSuperview()
+            make.height.lessThanOrEqualToSuperview()
+            make.top.bottom.equalToSuperview()
         }
     }
     

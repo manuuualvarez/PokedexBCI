@@ -135,7 +135,7 @@ public class TestNetworkManager: NetworkManagerProtocol {
                     // This is a retry attempt - should succeed
                     let now = Date()
                     if let firstDate = firstAttemptDate {
-                        let elapsed = now.timeIntervalSince(firstDate)
+                        let _ = now.timeIntervalSince(firstDate)
                     }
                     
                     isRetryAttempt = true
