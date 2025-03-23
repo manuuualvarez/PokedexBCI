@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		FE538B9B2D8CC07300F1A473 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FE538B9A2D8CC07300F1A473 /* SnapKit */; };
 		FE538BD32D8CE49500F1A473 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FE538BD22D8CE49500F1A473 /* Kingfisher */; };
+		FEB789E02BB1B6E5003D6A2F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FEB789DE2BB1B6DB003D6A2F /* SnapKit */; };
+		FEB789E12BB1B6E8003D6A2F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FEB789DF2BB1B6E0003D6A2F /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEB789E02BB1B6E5003D6A2F /* SnapKit in Frameworks */,
+				FEB789E12BB1B6E8003D6A2F /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +161,8 @@
 			);
 			name = "pokedex-pciTests";
 			packageProductDependencies = (
+				FEB789DE2BB1B6DB003D6A2F /* SnapKit */,
+				FEB789DF2BB1B6E0003D6A2F /* Kingfisher */,
 			);
 			productName = "pokedex-pciTests";
 			productReference = FE538B772D8CBF2300F1A473 /* pokedex-pciTests.xctest */;
@@ -607,6 +613,16 @@
 			productName = SnapKit;
 		};
 		FE538BD22D8CE49500F1A473 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE538BD12D8CE49500F1A473 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		FEB789DE2BB1B6DB003D6A2F /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE538B992D8CC07300F1A473 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		FEB789DF2BB1B6E0003D6A2F /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FE538BD12D8CE49500F1A473 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;

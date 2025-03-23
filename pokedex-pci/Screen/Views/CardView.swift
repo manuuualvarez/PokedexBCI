@@ -7,17 +7,9 @@
 import UIKit
 import SnapKit
 
-// MARK: - Card View
 class CardView: UIView {
 
     // MARK: - UI Components:
-    
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .bold)
-        label.textColor = .label
-        return label
-    }()
     
     let contentView: UIView = {
         let view = UIView()
@@ -25,7 +17,14 @@ class CardView: UIView {
         return view
     }()
     
-    // MARK: - Initializers
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .label
+        return label
+    }()
+    
+    // MARK: - Initializers:
     
     init(title: String) {
         super.init(frame: .zero)
@@ -45,8 +44,7 @@ class CardView: UIView {
         addSubview(contentView)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().inset(16)
+            make.top.leading.trailing.equalToSuperview().inset(16)
         }
         
         contentView.snp.makeConstraints { make in

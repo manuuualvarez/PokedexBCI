@@ -25,6 +25,8 @@ final class StatsSectionView: CardView {
     override init(title: String) {
         super.init(title: title)
         setupUI()
+        titleLabel.accessibilityIdentifier = AccessibilityIdentifiers.StatsSection.title
+        self.accessibilityIdentifier = AccessibilityIdentifiers.StatsSection.container
     }
     
     required init?(coder: NSCoder) {
@@ -46,20 +48,24 @@ final class StatsSectionView: CardView {
         nameLabel.text = name.replacingOccurrences(of: "-", with: " ")
         nameLabel.font = .systemFont(ofSize: 14, weight: .medium)
         nameLabel.textColor = .label
+        nameLabel.accessibilityIdentifier = AccessibilityIdentifiers.StatsSection.statName
         
         let valueLabel = UILabel()
         valueLabel.text = "\(value)"
         valueLabel.font = .systemFont(ofSize: 14, weight: .bold)
         valueLabel.textColor = .label
         valueLabel.textAlignment = .right
+        valueLabel.accessibilityIdentifier = AccessibilityIdentifiers.StatsSection.statValue
         
         let progressBackground = UIView()
         progressBackground.backgroundColor = .systemGray5
         progressBackground.layer.cornerRadius = 4
+        progressBackground.accessibilityIdentifier = AccessibilityIdentifiers.StatsSection.statProgressBackground
         
         let progressFill = UIView()
         progressFill.backgroundColor = colorName.uiColor
         progressFill.layer.cornerRadius = 4
+        progressFill.accessibilityIdentifier = AccessibilityIdentifiers.StatsSection.statProgressFill
         
         container.addSubview(nameLabel)
         container.addSubview(valueLabel)

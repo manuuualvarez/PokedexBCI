@@ -10,26 +10,26 @@ import UIKit
 
 // MARK: -  API Response models:
 
-struct PokemonListResponse: Codable {
-    let count: Int
-    let results: [PokemonListItem]
+public struct PokemonListResponse: Codable {
+    public let count: Int
+    public let results: [PokemonListItem]
 }
 
-struct PokemonListItem: Codable {
-    let name: String
-    let url: String
+public struct PokemonListItem: Codable {
+    public let name: String
+    public let url: String
 }
 
-struct Pokemon: Codable, Identifiable, Equatable {
-    let id: Int
-    let name: String
-    let types: [PokemonTypes]
-    let sprites: Sprites
-    let abilities: [Ability]
-    let moves: [Move]
-    let stats: [Stat]
+public struct Pokemon: Codable, Identifiable, Equatable {
+    public let id: Int
+    public let name: String
+    public let types: [PokemonTypes]
+    public let sprites: Sprites
+    public let abilities: [Ability]
+    public let moves: [Move]
+    public let stats: [Stat]
     
-    static func == (lhs: Pokemon, rhs: Pokemon) -> Bool {
+    public static func == (lhs: Pokemon, rhs: Pokemon) -> Bool {
         lhs.id == rhs.id &&
         lhs.name == rhs.name &&
         lhs.sprites == rhs.sprites &&
@@ -41,77 +41,77 @@ struct Pokemon: Codable, Identifiable, Equatable {
     // MARK: - Computed Properties
     
     /// Returns the primary type of the Pokemon (first type or "normal" if no types)
-    var primaryType: String {
+    public var primaryType: String {
         types.first?.type.name.lowercased() ?? "normal"
     }
     
     /// Returns the color name associated with the Pokemon's primary type
-    var colorName: PokemonColorName {
+    public var colorName: PokemonColorName {
         PokemonColorName.forType(primaryType)
     }
     
     /// Returns the UIColor associated with the Pokemon's primary type
-    var typeColor: UIColor {
+    public var typeColor: UIColor {
         colorName.uiColor
     }
 }
 
-struct PokemonTypes: Codable, Equatable {
-    let slot: Int
-    let type: PokemonType
+public struct PokemonTypes: Codable, Equatable {
+    public let slot: Int
+    public let type: PokemonType
 }
 
-struct PokemonType: Codable, Equatable {
-    let name: String
+public struct PokemonType: Codable, Equatable {
+    public let name: String
 }
 
-struct Ability: Codable, Equatable {
-    let ability: AbilityDetail
-    let isHidden: Bool
-    let slot: Int
+public struct Ability: Codable, Equatable {
+    public let ability: AbilityDetail
+    public let isHidden: Bool
+    public let slot: Int
     
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case ability
         case isHidden = "is_hidden"
         case slot
     }
     
-    struct AbilityDetail: Codable, Equatable {
-        let name: String
+    public struct AbilityDetail: Codable, Equatable {
+        public let name: String
     }
 }
 
-struct Move: Codable, Equatable {
-    let move: MoveDetail
+public struct Move: Codable, Equatable {
+    public let move: MoveDetail
 }
 
-struct MoveDetail: Codable, Equatable {
-    let name: String
+public struct MoveDetail: Codable, Equatable {
+    public let name: String
 }
 
-struct Sprites: Codable, Equatable {
-    let frontDefault: String
+public struct Sprites: Codable, Equatable {
+    public let frontDefault: String
     
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case frontDefault = "front_default"
     }
 }
 
-struct Stat: Codable, Equatable {
-    let baseStat: Int
-    let effort: Int
-    let stat: StatDetail
+public struct Stat: Codable, Equatable {
+    public let baseStat: Int
+    public let effort: Int
+    public let stat: StatDetail
     
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case baseStat = "base_stat"
         case effort
         case stat
     }
 }
 
-struct StatDetail: Codable, Equatable {
-    let name: String
-    let url: String
+public struct StatDetail: Codable, Equatable {
+    public let name: String
+    public let url: String
 }
 
 public struct SimpleStat: Equatable {

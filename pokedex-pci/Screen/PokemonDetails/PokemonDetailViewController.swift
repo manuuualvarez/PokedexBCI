@@ -23,6 +23,7 @@ final class PokemonDetailViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = true
+        scrollView.accessibilityIdentifier = AccessibilityIdentifiers.PokemonDetail.scrollView
         return scrollView
     }()
     

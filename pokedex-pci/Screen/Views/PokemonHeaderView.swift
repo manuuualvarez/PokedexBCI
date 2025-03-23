@@ -17,6 +17,7 @@ final class PokemonHeaderView: UIView {
         let image = UIImage(systemName: "chevron.left", withConfiguration: config)
         button.setImage(image, for: .normal)
         button.tintColor = .white
+        button.accessibilityIdentifier = AccessibilityIdentifiers.PokemonDetail.backButton
         return button
     }()
     
@@ -24,6 +25,7 @@ final class PokemonHeaderView: UIView {
         let label = UILabel()
         label.textColor = .white.withAlphaComponent(0.7)
         label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.accessibilityIdentifier = AccessibilityIdentifiers.PokemonDetail.pokemonId
         return label
     }()
     
@@ -42,6 +44,7 @@ final class PokemonHeaderView: UIView {
         label.layer.shadowRadius = 3
         label.layer.shadowOpacity = 0.3
         label.layer.masksToBounds = false
+        label.accessibilityIdentifier = AccessibilityIdentifiers.PokemonDetail.pokemonName
         return label
     }()
     
@@ -55,6 +58,7 @@ final class PokemonHeaderView: UIView {
     private lazy var typeContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
+        view.accessibilityIdentifier = AccessibilityIdentifiers.PokemonDetail.typeContainer
         return view
     }()
     
@@ -71,6 +75,7 @@ final class PokemonHeaderView: UIView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .clear
+        imageView.accessibilityIdentifier = AccessibilityIdentifiers.PokemonDetail.pokemonImage
         return imageView
     }()
     
@@ -129,6 +134,7 @@ final class PokemonHeaderView: UIView {
         label.textColor = .white
         label.font = .systemFont(ofSize: 14, weight: .medium)
         label.textAlignment = .center
+        label.accessibilityIdentifier = AccessibilityIdentifiers.PokemonDetail.typeLabel
         
         badge.addSubview(label)
         label.snp.makeConstraints { make in

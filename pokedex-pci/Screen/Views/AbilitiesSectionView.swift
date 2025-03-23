@@ -25,6 +25,7 @@ final class AbilitiesSectionView: CardView {
     override init(title: String) {
         super.init(title: title)
         setupUI()
+        self.accessibilityIdentifier = AccessibilityIdentifiers.AbilitiesSection.container
     }
     
     required init?(coder: NSCoder) {
@@ -44,6 +45,7 @@ final class AbilitiesSectionView: CardView {
         let view = UIView()
         view.backgroundColor = .systemGray6
         view.layer.cornerRadius = 8
+        view.accessibilityIdentifier = AccessibilityIdentifiers.AbilitiesSection.abilityContainer
         
         // Add subtle shadow for better depth
         view.layer.shadowColor = UIColor.black.cgColor
@@ -56,6 +58,7 @@ final class AbilitiesSectionView: CardView {
         label.font = .systemFont(ofSize: 15)
         label.textColor = .label
         label.numberOfLines = 0
+        label.accessibilityIdentifier = AccessibilityIdentifiers.AbilitiesSection.abilityLabel
         
         view.addSubview(label)
         label.snp.makeConstraints { make in

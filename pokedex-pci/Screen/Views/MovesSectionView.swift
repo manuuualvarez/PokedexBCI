@@ -25,6 +25,8 @@ final class MovesSectionView: CardView {
     override init(title: String) {
         super.init(title: title)
         setupUI()
+        titleLabel.accessibilityIdentifier = AccessibilityIdentifiers.MovesSection.title
+        self.accessibilityIdentifier = AccessibilityIdentifiers.MovesSection.container
     }
     
     required init?(coder: NSCoder) {
@@ -44,6 +46,7 @@ final class MovesSectionView: CardView {
         let view = UIView()
         view.backgroundColor = .systemGray6
         view.layer.cornerRadius = 8
+        view.accessibilityIdentifier = AccessibilityIdentifiers.MovesSection.moveContainer
         
         // Add subtle shadow for better depth
         view.layer.shadowColor = UIColor.black.cgColor
@@ -56,6 +59,7 @@ final class MovesSectionView: CardView {
         label.font = .systemFont(ofSize: 15)
         label.textColor = .label
         label.numberOfLines = 0
+        label.accessibilityIdentifier = AccessibilityIdentifiers.MovesSection.moveLabel
         
         view.addSubview(label)
         label.snp.makeConstraints { make in

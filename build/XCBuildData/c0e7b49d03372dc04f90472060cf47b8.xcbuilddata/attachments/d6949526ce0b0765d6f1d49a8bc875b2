@@ -1,0 +1,228 @@
+{
+  "" : {
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/pokedex-pci-master.dia",
+    "emit-module-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/pokedex-pci-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/pokedex-pci-master-emit-module.dia",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/pokedex-pci-master.swiftdeps"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/App/AppDelegate.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppDelegate.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppDelegate.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppDelegate.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppDelegate.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppDelegate.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppDelegate.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppDelegate.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppDelegate~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/App/SceneDelegate.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/SceneDelegate.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/SceneDelegate.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/SceneDelegate.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/SceneDelegate.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/SceneDelegate.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/SceneDelegate.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/SceneDelegate.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/SceneDelegate~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Coordinator/AppCoordinator.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppCoordinator.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppCoordinator.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppCoordinator.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppCoordinator.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppCoordinator.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppCoordinator.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppCoordinator.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AppCoordinator~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Models/API/PokemonModels.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Models/Cache/CacheLoadingStrategy.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Models/Cache/PokemonCache.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Models/Testing/TestingInfrastructure.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/TestingInfrastructure.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/TestingInfrastructure.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/TestingInfrastructure.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/TestingInfrastructure.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/TestingInfrastructure.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/TestingInfrastructure.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/TestingInfrastructure.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/TestingInfrastructure~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Networking/NetworkManager.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManager.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManager.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManager.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManager.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManager.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManager.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManager.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManager~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Networking/NetworkManagerFactory.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerFactory.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerFactory.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerFactory.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerFactory.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerFactory.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerFactory.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerFactory.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerFactory~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Networking/NetworkManagerProtocol.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerProtocol.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerProtocol.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerProtocol.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerProtocol.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerProtocol.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerProtocol.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerProtocol.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/NetworkManagerProtocol~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/Home/PokemonCell.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCell.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCell.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCell.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCell.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCell.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCell.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCell.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCell~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/Home/PokemonListViewController.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewController.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewController.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewController.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewController.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewController.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewController.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewController.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewController~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/Home/PokemonListViewModel.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewModel.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewModel.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewModel.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewModel.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewModel.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewModel.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewModel.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonListViewModel~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/PokemonDetails/PokemonDetailViewController.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewController.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewController.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewController.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewController.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewController.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewController.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewController.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewController~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/PokemonDetails/PokemonDetailViewModel.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewModel.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewModel.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewModel.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewModel.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewModel.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewModel.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewModel.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonDetailViewModel~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/Views/AbilitiesSectionView.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AbilitiesSectionView.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AbilitiesSectionView.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AbilitiesSectionView.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AbilitiesSectionView.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AbilitiesSectionView.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AbilitiesSectionView.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AbilitiesSectionView.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AbilitiesSectionView~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/Views/CardView.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CardView.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CardView.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CardView.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CardView.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CardView.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CardView.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CardView.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CardView~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/Views/MovesSectionView.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/MovesSectionView.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/MovesSectionView.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/MovesSectionView.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/MovesSectionView.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/MovesSectionView.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/MovesSectionView.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/MovesSectionView.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/MovesSectionView~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/Views/PokemonHeaderView.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonHeaderView.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonHeaderView.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonHeaderView.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonHeaderView.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonHeaderView.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonHeaderView.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonHeaderView.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonHeaderView~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Screen/Views/StatsSectionView.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/StatsSectionView.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/StatsSectionView.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/StatsSectionView.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/StatsSectionView.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/StatsSectionView.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/StatsSectionView.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/StatsSectionView.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/StatsSectionView~partial.swiftmodule"
+  },
+  "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Utils/AccessibilityIdentifiers.swift" : {
+    "const-values" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AccessibilityIdentifiers.swiftconstvalues",
+    "dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AccessibilityIdentifiers.d",
+    "diagnostics" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AccessibilityIdentifiers.dia",
+    "index-unit-output-path" : "/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AccessibilityIdentifiers.o",
+    "llvm-bc" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AccessibilityIdentifiers.bc",
+    "object" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AccessibilityIdentifiers.o",
+    "swift-dependencies" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AccessibilityIdentifiers.swiftdeps",
+    "swiftmodule" : "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/AccessibilityIdentifiers~partial.swiftmodule"
+  }
+}

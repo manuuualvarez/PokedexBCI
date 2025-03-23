@@ -1,0 +1,18 @@
+Target dependency graph (8 targets)
+Target 'pokedex-pciTests' in project 'pokedex-pci'
+➜ Explicit dependency on target 'pokedex-pci' in project 'pokedex-pci'
+Target 'pokedex-pci' in project 'pokedex-pci'
+➜ Explicit dependency on target 'Kingfisher' in project 'Kingfisher'
+➜ Explicit dependency on target 'SnapKit' in project 'SnapKit'
+Target 'SnapKit' in project 'SnapKit'
+➜ Explicit dependency on target 'SnapKit' in project 'SnapKit'
+➜ Explicit dependency on target 'SnapKit_SnapKit' in project 'SnapKit'
+Target 'SnapKit' in project 'SnapKit'
+➜ Explicit dependency on target 'SnapKit_SnapKit' in project 'SnapKit'
+Target 'SnapKit_SnapKit' in project 'SnapKit' (no dependencies)
+Target 'Kingfisher' in project 'Kingfisher'
+➜ Explicit dependency on target 'Kingfisher' in project 'Kingfisher'
+➜ Explicit dependency on target 'Kingfisher_Kingfisher' in project 'Kingfisher'
+Target 'Kingfisher' in project 'Kingfisher'
+➜ Explicit dependency on target 'Kingfisher_Kingfisher' in project 'Kingfisher'
+Target 'Kingfisher_Kingfisher' in project 'Kingfisher' (no dependencies)

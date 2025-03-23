@@ -1,0 +1,18 @@
+"/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Models/Cache/CacheLoadingStrategy.swift":
+  diagnostics: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.dia"
+  dependencies: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.d"
+  swift-dependencies: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.swiftdeps"
+  object: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.o"
+  const-values: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/CacheLoadingStrategy.swiftconstvalues"
+"/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Models/API/PokemonModels.swift":
+  const-values: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.swiftconstvalues"
+  object: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.o"
+  swift-dependencies: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.swiftdeps"
+  diagnostics: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.dia"
+  dependencies: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonModels.d"
+"/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/pokedex-pci/Models/Cache/PokemonCache.swift":
+  diagnostics: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.dia"
+  dependencies: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.d"
+  const-values: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.swiftconstvalues"
+  object: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.o"
+  swift-dependencies: "/Users/manuelalvarez/Local/Documents/Projects/Swiftui/Challenge/pokedex-bci/build/pokedex-pci.build/Debug-iphoneos/pokedex-pci.build/Objects-normal/arm64/PokemonCache.swiftdeps"

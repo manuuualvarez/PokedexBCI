@@ -75,16 +75,7 @@ final class PokemonDetailViewModel: PokemonDetailViewModelProtocol {
                 let colorName = getColorNameForStatName(statName)
                 result.append(SimpleStat(name: statName, value: value, colorName: colorName))
             }
-        } else {
-            result = [
-                SimpleStat(name: "Height", value: Int(Double(pokemon.id) / 5 + 5), colorName: .orange),
-                SimpleStat(name: "Attack", value: min(49, pokemon.id * 3), colorName: .red),
-                SimpleStat(name: "Defense", value: min(49, pokemon.id * 2 + 10), colorName: .blue),
-                SimpleStat(name: "Weight", value: min(69, pokemon.id * 4 + 5), colorName: .purple),
-                SimpleStat(name: "Total", value: min(100, pokemon.id * 5), colorName: .green)
-            ]
         }
-        
         return result
     }
     
@@ -103,26 +94,5 @@ final class PokemonDetailViewModel: PokemonDetailViewModelProtocol {
         case "speed": return .yellow
         default: return .gray
         }
-    }
-}
-
-// Legacy properties made public to maintain API compatibility
-extension PokemonDetailViewModel {
-    // These are maintained for backward compatibility
-    var types: String { pokemon.types.map { $0.type.name.capitalized }.joined(separator: " / ") }
-    var primaryType: String { pokemon.primaryType }
-    var abilities: String {
-        pokemon.abilities
-            .map { ability in
-                let name = ability.ability.name.capitalized
-                return ability.isHidden ? "\(name) (Hidden)" : name
-            }
-            .joined(separator: "\n")
-    }
-    var moves: String {
-        pokemon.moves
-            .prefix(5)
-            .map { $0.move.name.capitalized }
-            .joined(separator: "\n")
     }
 } 
