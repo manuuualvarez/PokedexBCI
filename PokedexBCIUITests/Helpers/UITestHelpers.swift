@@ -1,6 +1,6 @@
 //
 //  UITestHelpers.swift
-//  pokedex-pciUITests
+//  PokedexBCIUITests
 //
 //  Created by Manny Alvarez on 23/03/2025.
 //
@@ -22,8 +22,7 @@ class UITestHelper {
         // Add the UI testing flag
         app.launchArguments.append("UI-TESTING")
         
-        // Configure behavior to be more resilient in UI tests
-        app.launchArguments.append("UI-TESTING-SLOWER-ANIMATIONS")
+        // Configure behavior for tests
         app.launchArguments.append("UI-TESTING-WAIT-LONGER")
         
         if let scenario = errorScenario {
