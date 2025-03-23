@@ -1,6 +1,6 @@
 //
 //  CardView.swift
-//  pokedex-pci
+//  PokedexBCI
 //
 //  Created by Manny Alvarez on 21/03/2025.
 //

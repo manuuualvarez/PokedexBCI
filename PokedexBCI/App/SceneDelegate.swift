@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  pokedex-pci
+//  PokedexBCI
 //
 //  Created by Manny Alvarez on 20/03/2025.
 //
@@ -21,14 +21,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         self.window = window
         
-        // MARK: - Navigation Setup
-        /// Configure the navigation controller with custom appearance for a cohesive UI
+        // Configure navigation controller
         let navigationController = UINavigationController()
         navigationController.navigationBar.prefersLargeTitles = true
         navigationController.navigationBar.tintColor = .white
         
-        // MARK: - Navigation Bar Appearance
-        /// Create and configure the navigation bar appearance for all states
+        // Setup navigation bar appearance
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .systemRed
@@ -39,10 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navigationController.navigationBar.scrollEdgeAppearance = appearance
         navigationController.navigationBar.compactAppearance = appearance
         
-        // MARK: - Coordinator Setup
-        /// Initialize the app coordinator on the main actor since it deals with UI
-        /// and SwiftData operations. The coordinator handles navigation and
-        /// dependency injection throughout the app.
+        // Initialize coordinator
         Task { @MainActor in
             do {
                 coordinator = try AppCoordinator(navigationController: navigationController)

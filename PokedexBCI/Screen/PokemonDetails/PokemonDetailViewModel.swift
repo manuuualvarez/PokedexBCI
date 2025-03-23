@@ -1,6 +1,6 @@
 //
 //  POkemonDetailViewModel.swift
-//  pokedex-pci
+//  PokedexBCI
 //
 //  Created by Manny Alvarez on 20/03/2025.
 //

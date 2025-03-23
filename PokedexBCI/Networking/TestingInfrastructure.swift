@@ -1,6 +1,6 @@
 //
 //  TestingInfrastructure.swift
-//  pokedex-pci
+//  PokedexBCI
 //
 //  Created by Manny Alvarez on 02/06/2025.
 //

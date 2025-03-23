@@ -1,6 +1,6 @@
 //
 //  NetworkManagerFactory.swift
-//  pokedex-pci
+//  PokedexBCI
 //
 //  Created by Manny Alvarez on 22/03/2025.
 //

@@ -4,17 +4,17 @@ import SwiftData
 @MainActor
 final class AppCoordinator: ObservableObject {
     
-    // MARK: - Properties:
+    // MARK: - Properties
     
     private let navigationController: UINavigationController
     private let networkManagerFactory: NetworkManagerFactoryProtocol = DefaultNetworkManagerFactory()
-    /// Boolean flag to indicate if the app is running in UI testing mode
+    /// Detects if the app is running in UI testing mode
     private var isUITesting: Bool {
         ProcessInfo.processInfo.arguments.contains("UI-TESTING")
     }
     let modelContainer: ModelContainer
     
-    // MARK: - Initialization:
+    // MARK: - Initialization
     
     init(navigationController: UINavigationController) throws {
         self.navigationController = navigationController
@@ -22,14 +22,14 @@ final class AppCoordinator: ObservableObject {
         navigationController.navigationBar.backgroundColor = .red
     }
     
-    // MARK: - Public methods:
+    // MARK: - Navigation Methods
     
     func start() {
         showPokemonList()
     }
     
     func showPokemonList() {
-        ///  If we're in UI testing mode, create a view model with mock network manager else use real API data
+        // Create ViewModel with real or mocked data based on testing mode
         let viewModel: any PokemonListViewModelProtocol
         
         if isUITesting {
@@ -55,10 +55,10 @@ final class AppCoordinator: ObservableObject {
         navigationController.pushViewController(viewController, animated: true)
     }
     
-    // MARK: - Helper Methods
-    /// Creates a cache strategy that doesn't load cache for UI testing
+    // MARK: - Helpers
+    
+    /// Creates a strategy that disables caching for UI tests
     private func createNoCacheStrategy() -> CacheLoadingStrategy {
-        // Use the shared TestCacheStrategy from our testing infrastructure
         return TestCacheStrategy()
     }
 }

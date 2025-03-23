@@ -1,6 +1,7 @@
 import Foundation
 
-/// Network manager for handling Pokemon API requests
+// MARK: - NetworkManager
+/// Handles Pokemon API requests with proper error handling and logging
 final class NetworkManager: NetworkManagerProtocol {
     private let apiService: PokemonAPIServiceProtocol
     
@@ -12,6 +13,8 @@ final class NetworkManager: NetworkManagerProtocol {
     init(apiService: PokemonAPIServiceProtocol) {
         self.apiService = apiService
     }
+    
+    // MARK: - API Methods
     
     func fetchPokemonList() async throws -> PokemonListResponse {
         do {

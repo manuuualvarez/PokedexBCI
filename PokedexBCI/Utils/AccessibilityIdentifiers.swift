@@ -1,6 +1,6 @@
 //
 //  AccessibilityIdentifiers.swift
-//  pokedex-pci
+//  PokedexBCI
 //
 //  Created by Manny Alvarez on 31/05/2025.
 //

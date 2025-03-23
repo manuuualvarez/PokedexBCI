@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  pokedex-pci
+//  PokedexBCI
 //
 //  Created by Manny Alvarez on 20/03/2025.
 //
@@ -14,16 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        // MARK: - SwiftData Cache Setup
-        /// SwiftData is used for caching layer with the following configuration:
-        /// 1. Schema: Defines the data model (PokemonBasicCache) for storing Pokemon data
-        /// 2. Storage: Data is persisted to disk (not in-memory only)
-        /// 3. Saving: Allows writing new cache entries
-        ///
-        /// Cache Strategy:
-        /// - Cache Duration: 15 minutes
-        /// - Storage Location: Device's persistent storage
-        /// - Invalidation: Automatic after expiration
+        // MARK: - SwiftData Setup
+        // Initialize SwiftData container for caching Pokémon data
+        // Cached data expires automatically after 15 minutes
         do {
             let schema = Schema([PokemonCache.self])
             let modelConfiguration = ModelConfiguration(
@@ -39,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    // MARK: UISceneSession Lifecycle
+    // MARK: - UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)

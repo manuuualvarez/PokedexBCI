@@ -1,6 +1,6 @@
 //
 //  ErrorHandlingUITest.swift
-//  pokedex-pciUITests
+//  PokedexBCIUITests
 //
 //  Created by Manny Alvarez on 22/03/2025.
 //
@@ -8,85 +8,84 @@
 import XCTest
 @testable import PokedexBCI
 
+// MARK: - Error Handling UI Tests
+/// UI tests that verify the app's resilience to network and data failures.
+/// These tests are critical for ensuring proper user experience during error conditions.
 final class ErrorHandlingUITest: XCTestCase {
     
     var app: XCUIApplication!
     
     override func setUp() {
         super.setUp()
-        
-        // Always add this line to immediately stop tests when failures occur
+        // Fail immediately on test failures to avoid cascading issues
         continueAfterFailure = false
         
-        // Force portrait orientation
+        // Force portrait orientation for consistent testing
         let device = XCUIDevice.shared
         device.orientation = .portrait
         
-        // Create app instance
+        // Create app instance with default configuration
         app = XCUIApplication()
-        
-        // Note: We don't set global launch arguments here anymore
-        // Each test will set its own complete arguments
     }
     
-    // MARK: - Error Handling Test
+    // MARK: - No Cache Error Tests
+    
+    /// Tests the app's behavior when experiencing a network error without cached data
+    /// This validates the error presentation and UI state during a "cold start" failure
     func testErrorHandlingWithNoCache() throws {
-        
-        // Configure the app for error state test
-        app.launchArguments = ["UI-TESTING", "ERROR-TESTING", "ERROR-NO-CACHE"]
+        // Configure app for network error with no available cache
+        UITestHelper.setupUITestEnvironment(app: app, errorScenario: .errorNoCache)
         app.launch()
         
-        // Wait for the app to load
+        // Wait for the app to load and error state to appear
         sleep(2)
         
-        // Verify the error alert appears
+        // Verify error alert is displayed
         let errorAlert = app.alerts["Error"]
         XCTAssertTrue(errorAlert.exists, "Error alert should appear when there's no cache")
         
-        // Verify that collection view is hidden
-        // (This is harder to verify directly, but we can check that cells aren't visible)
+        // Verify collection view is hidden (no visible cells)
         let cells = app.cells
         XCTAssertEqual(cells.count, 0, "Collection view should be hidden with no cells visible")
         
-        // Verify alert has the right message
+        // Verify alert contains appropriate error message
         let alertText = errorAlert.staticTexts.element(boundBy: 0).label
-        XCTAssertTrue(alertText.contains("Error"), "Alert should mention server/response error: \(alertText)")
+        XCTAssertTrue(alertText.contains("Error"), "Alert should describe the error condition")
         
-        // Verify there's an "Retry" button to dismiss the alert
+        // Verify retry button exists
         let retryButton = errorAlert.buttons["Retry"]
-        XCTAssertTrue(retryButton.exists, "Alert should have an Retry button")
+        XCTAssertTrue(retryButton.exists, "Alert should have a Retry button")
         
-        // Tap the "OK" button
+        // Test retry button functionality
         retryButton.tap()
-        
-        // Wait for the alert to be dismissed
         sleep(1)
         
-        // Verify that the app shows an empty state or error message
-        // We should still see no cells
+        // Verify app remains in error state after unsuccessful retry
         XCTAssertEqual(app.cells.count, 0, "Collection view should still have no cells after dismissing error")
     }
     
-    // MARK: - Retry Functionality Test
+    // MARK: - Recovery Tests
+    
+    /// Tests the app's ability to recover from an error when a retry succeeds
+    /// This validates our retry mechanism and proper state restoration
     func testErrorThenSuccessWithRetry() throws {
-        
-        // Configure the app for retry test
-        app.launchArguments = ["UI-TESTING", "ERROR-TESTING", "ERROR-THEN-SUCCESS"] 
+        // Configure app to fail first then succeed on retry
+        UITestHelper.setupUITestEnvironment(app: app, errorScenario: .errorThenSuccess)
         app.launch()
         
-        // Wait for initial error state with longer timeout
+        // Wait for initial error state
         sleep(3)
         
         // Verify the app shows an error state initially
         let errorAlert = app.alerts["Error"]
         XCTAssertTrue(errorAlert.exists, "Error alert should appear")
                 
-        // Find and tap retry button in the alert
+        // Find and tap retry button
         let retryButton = errorAlert.buttons["Retry"]
         XCTAssertTrue(retryButton.exists, "Retry button should exist in error state")
         retryButton.tap()
         
-        // Wait for retry to complete and for the UI to update
+        // Wait for retry to complete and UI to update
         sleep(5)
         
         // Look for any cells that become available with timeout

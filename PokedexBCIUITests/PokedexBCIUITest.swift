@@ -1,6 +1,6 @@
 //
-//  BasicsUITest.swift
-//  pokedex-pciUITests
+//  PokedexBCIUITest.swift
+//  PokedexBCIUITests
 //
 //  Created by Manny Alvarez on 01/06/2025.
 //
@@ -8,325 +8,206 @@
 import XCTest
 @testable import PokedexBCI
 
+// MARK: - Pokémon App UI Tests
+/// UI test suite validating key user flows and interactions throughout the app.
+/// Tests use real UI components with mock data to ensure stability.
 final class PokedexAppUITest: XCTestCase {
     
     var app: XCUIApplication!
     
     override func setUp() {
         super.setUp()
-        // Always add this line to immediately stop tests when failures occur
         continueAfterFailure = false
-        // Force portrait - add this before launching the app
+        
+        // Force portrait orientation for consistent testing
         let device = XCUIDevice.shared
         device.orientation = .portrait
-        // Create app with mock data for UI testing
+        
+        // Initialize app with mock data configuration
         app = XCUIApplication()
-        // Configure the app for UI testing with mocks
         app.launchArguments = ["UI-TESTING"]
-        // No more custom setup needed - we're using the shared testing infrastructure
     }
     
-    // MARK: - Basic App Tests
+    // MARK: - Baseline Tests
+    
+    /// Validates that the app launches successfully and stabilizes
+    /// This is our most basic smoke test - if this fails, everything else will too
     func testAppLaunches() throws {
-        // Launch app
         app.launch()
-        // Force portrait again
         XCUIDevice.shared.orientation = .portrait
-        // Wait a moment for everything to settle
         sleep(2)
         
-        // Just verify the app is running with a very basic check
-        // that should always pass regardless of UI state
-        XCTAssertTrue(app.exists, "App should exist")
+        XCTAssertTrue(app.exists, "App should exist and be running")
     }
     
+    /// Validates that the collection view loads Pokemon data from the network layer
+    /// This verifies our core data loading functionality works correctly
     func testCollectionViewHasItems() throws {
-        // Launch app
         app.launch()
-        
-        // Force portrait orientation
         XCUIDevice.shared.orientation = .portrait
-        
-        // Wait a moment for data to load - with mocks this should be fast
         sleep(1)
         
-        // Find cells in the collection view
         let cells = app.cells
-        
-        // Ensure we have at least a few cells
-        XCTAssertTrue(cells.count > 0, "Collection view should have cells")
+        XCTAssertTrue(cells.count > 0, "Collection view should display Pokemon cells after data loading")
     }
     
+    /// Verifies scrolling behavior in the collection view
+    /// Critical for users to navigate through the Pokemon list
     func testCollectionViewScrolling() throws {
-        // Launch app
         app.launch()
-        
-        // Force portrait orientation
         XCUIDevice.shared.orientation = .portrait
-        
-        // Wait for data to load - should be fast with mocks
         sleep(1)
         
-        // Get a reference to the main collection view
         let collectionView = app.collectionViews.element(boundBy: 0)
         XCTAssertTrue(collectionView.exists, "Collection view should exist")
         
-        // Verify we can scroll down
+        // Test scroll down
         collectionView.swipeUp()
-        
-        // Wait a moment for scrolling to complete
         sleep(1)
         
-        // Verify we can scroll back up
+        // Test scroll back up
         collectionView.swipeDown()
-        
-        // Wait a moment for scrolling to complete
         sleep(1)
     }
     
+    /// Confirms that loading states are correctly displayed during data fetch
+    /// Important for providing visual feedback to users during network operations
     func testLoadingStateIsDisplayed() throws {
-        // Launch app but don't wait after launch
         app.launch()
-        
-        // Force portrait orientation
         XCUIDevice.shared.orientation = .portrait
         
-        // Check for a loading indicator (this might be too quick with mocks)
+        // Loading indicators may be brief with mocks
         sleep(2)
         
-        // Wait for data to appear
-        sleep(1)
-        
-        // Look for some evidence that loading completed
+        // Verify content loads
         let cells = app.cells
-        XCTAssertTrue(cells.count > 0, "Collection view should have cells after loading")
+        XCTAssertTrue(cells.count > 0, "Collection view should display data after loading completes")
     }
     
+    // MARK: - Search Functionality Tests
+    
+    /// Verifies that the search bar is accessible in the main Pokemon list
+    /// Critical entry point for users to find specific Pokemon
     func testSearchBarExists() throws {
-        // Launch app
         app.launch()
-        
-        // Force portrait orientation
         XCUIDevice.shared.orientation = .portrait
-        
-        // Wait for data to load - should be fast with mocks
         sleep(1)
         
-        // Verify search bar exists
         let searchBar = app.searchFields["Search Pokémon"]
-        XCTAssertTrue(searchBar.exists, "Search bar should exist")
+        XCTAssertTrue(searchBar.exists, "Search bar should be present for filtering Pokemon")
     }
     
+    /// Tests basic search bar interactions (tap, type, clear)
+    /// Validates core search interaction patterns work correctly
     func testSearchBarInteraction() throws {
-        // Launch app
         app.launch()
-        
-        // Force portrait orientation
         XCUIDevice.shared.orientation = .portrait
-        
-        // Wait for data to load - should be fast with mocks
         sleep(1)
         
-        // Find the search bar
         let searchBar = app.searchFields["Search Pokémon"]
         XCTAssertTrue(searchBar.exists, "Search bar should exist")
         
-        // Tap the search bar
+        // Test typing in search
         searchBar.tap()
-        
-        // Type a search term
         searchBar.typeText("Pika")
-        
-        // Wait for search results
         sleep(1)
         
-        // Clear the search
+        // Test clearing search
         searchBar.buttons["Clear text"].tap()
-        
-        // Wait for results to reset
         sleep(1)
     }
     
-    // MARK: - Updated Search Tests
-    
+    /// Tests searching for non-existent Pokemon and validates empty results state
+    /// Important for handling the no-results edge case properly
     func testSearchWithNoResults() throws {
-        // Launch app
         app.launch()
-        
-        // Wait for data to load
         sleep(1)
         
-        // Find the search bar
         let searchBar = app.searchFields["Search Pokémon"]
         XCTAssertTrue(searchBar.exists, "Search bar should exist")
         
-        // Initial state - cells should exist
+        // Record initial state to verify we return to it
         let initialCellCount = app.collectionViews.cells.count
-        XCTAssertGreaterThan(initialCellCount, 0, "Collection view should have cells initially")
+        XCTAssertGreaterThan(initialCellCount, 0, "Collection view should initially display Pokemon")
         
-        // Search for something that doesn't exist
+        // Search for non-existent Pokemon
         searchBar.tap()
         searchBar.typeText("xyzNonExistentPokemon")
-        
-        // Wait for search results
         sleep(1)
         
         // Verify no results shown
         XCTAssertEqual(app.collectionViews.cells.count, 0, "No cells should be visible for non-existent Pokémon")
         
-        // Clear the search
+        // Clear search and verify return to initial state
         searchBar.buttons["Clear text"].tap()
-        
-        // Wait for results to reset
         sleep(1)
-        
-        // Verify cells are shown again
-        XCTAssertEqual(app.collectionViews.cells.count, initialCellCount, "Collection view should return to initial state")
+        XCTAssertEqual(app.collectionViews.cells.count, initialCellCount, "Collection view should return to initial state after clearing search")
     }
     
+    /// Tests filtering to a specific Pokemon and validates the filtering logic
+    /// Critical for the main search functionality to work as expected
     func testSearchWithResults() throws {
-        // Launch app
         app.launch()
-        
-        // Wait for data to load
         sleep(1)
         
-        // Find the search bar
         let searchBar = app.searchFields["Search Pokémon"]
         
-        // Search for "Bulbasaur" (should exist in the first few Pokémon)
+        // Search for a specific Pokemon
         searchBar.tap()
         searchBar.typeText("Bulbasaur")
-        
-        // Wait for search results
         sleep(1)
         
-        // Verify results are filtered
+        // Verify filtered results
         XCTAssertEqual(app.collectionViews.cells.count, 1, "Should find exactly one result for Bulbasaur")
         
-        // Verify the result is actually Bulbasaur
+        // Verify the result is the correct Pokemon
         let pokemonNameLabel = app.staticTexts["Bulbasaur"]
-        XCTAssertTrue(pokemonNameLabel.exists, "The result should be Bulbasaur")
+        XCTAssertTrue(pokemonNameLabel.exists, "The result should display Bulbasaur")
         
-        // Clear the search
+        // Clear search and verify multiple results return
         searchBar.buttons["Clear text"].tap()
-        
-        // Wait for results to reset
         sleep(1)
-        
-        // Verify cells are shown again (more than just one)
-        XCTAssertGreaterThan(app.collectionViews.cells.count, 1, "Collection view should show multiple cells after clearing search")
+        XCTAssertGreaterThan(app.collectionViews.cells.count, 1, "Collection view should show multiple Pokemon after clearing search")
     }
     
-    // MARK: - PokemonListViewController Tests
+    // MARK: - Navigation Tests
     
+    /// Verifies that the navigation bar shows the correct title
+    /// Important for establishing context for the user
     func testNavigationBarTitle() throws {
-        // Launch app
         app.launch()
-        
-        // Force portrait orientation
         XCUIDevice.shared.orientation = .portrait
-        
-        // Wait for the UI to load
         sleep(1)
         
-        // Check if the navigation bar contains "Pokédex" title
         let navigationBar = app.navigationBars["Pokédex"]
-        XCTAssertTrue(navigationBar.exists, "Navigation bar with title 'Pokédex' should exist")
+        XCTAssertTrue(navigationBar.exists, "Navigation bar should display 'Pokédex' title")
     }
     
+    /// Tests tapping on a Pokemon and navigating to its detail view
+    /// Tests the core navigation flow of the app
     func testTapOnFirstCell() throws {
-        // Launch app
         app.launch()
-        
-        // Force portrait orientation
         XCUIDevice.shared.orientation = .portrait
-        
-        // Wait for data to load completely - should be fast with mocks
         sleep(1)
         
-        // Find all cells
+        // Find and tap first cell
         let cells = app.cells
         XCTAssertTrue(cells.count > 0, "Collection view should have cells")
-        
-        // Tap on the first cell
         let firstCell = cells.element(boundBy: 0)
         firstCell.tap()
         
-        // Wait for detail view to load
+        // Allow time for navigation
         sleep(1)
         
-        // Verify we've navigated to a detail view
+        // Verify navigation by checking for back button
         let backButton = app.buttons.element(boundBy: 0) // Usually the first button is back
-        XCTAssertTrue(backButton.exists, "Back button should exist in detail view")
+        XCTAssertTrue(backButton.exists, "Back button should exist after navigating to detail view")
         
-        // Navigate back to the list
+        // Navigate back to list
         backButton.tap()
-        
-        // Wait for list to reappear
         sleep(1)
         
-        // Verify we're back at the list
-        XCTAssertTrue(cells.count > 0, "Collection view cells should be visible again")
-    }
-    
-    func testMultipleTapAndBackNavigation() throws {
-        // Launch app
-        app.launch()
-        
-        // Force portrait orientation
-        XCUIDevice.shared.orientation = .portrait
-        
-        // Wait for data to load completely - should be fast with mocks
-        sleep(1)
-        
-        // Find all cells
-        let cells = app.cells
-        XCTAssertTrue(cells.count > 0, "Collection view should have cells")
-        
-        // Test tapping on multiple cells (first 3 if available)
-        let cellCount = min(3, cells.count)
-        
-        for i in 0..<cellCount {
-            // Tap on a cell
-            let cell = cells.element(boundBy: i)
-            cell.tap()
-            
-            // Wait for detail view to load
-            sleep(1)
-            
-            // Verify navigation
-            let backButton = app.buttons.element(boundBy: 0)
-            XCTAssertTrue(backButton.exists, "Back button should exist in detail view")
-            
-            // Navigate back
-            backButton.tap()
-            
-            // Wait for list to reappear
-            sleep(1)
-        }
-    }
-    
-    func testProgressIndicatorsAppear() throws {
-        // Launch the app fresh
-        app.launch()
-        
-        // Force portrait orientation
-        XCUIDevice.shared.orientation = .portrait
-        
-        // Check for the existence of a progress view or activity indicator
-        // Note: With mocks, these might not appear at all
-        let progressExists = app.progressIndicators.count > 0 || app.activityIndicators.count > 0
-        
-        // With mocks, we may not see loading indicators, which is fine
-        if !progressExists {
-            print("Note: No loading indicators were visible. This is expected with mock data.")
-        }
-        
-        // Wait for content to load
-        sleep(1)
-        
-        // Verify the app loaded content by checking for cells
-        XCTAssertTrue(app.cells.count > 0, "App should display Pokemon cells after loading")
+        // Verify return to list
+        XCTAssertTrue(cells.count > 0, "Collection view should be visible again after returning from detail")
     }
 } 

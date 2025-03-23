@@ -1,6 +1,8 @@
 import XCTest
 @testable import PokedexBCI
 
+// MARK: - NetworkManager Tests
+/// Tests the NetworkManager's ability to handle the API layer, error handling, and retry logic
 final class NetworkManagerTests: XCTestCase {
     
     // MARK: - Properties
@@ -22,9 +24,10 @@ final class NetworkManagerTests: XCTestCase {
         super.tearDown()
     }
     
-    // MARK: - Test Cases
+    // MARK: - Pokemon List Fetch Tests
     
-    /// Test successful Pokemon list fetch
+    /// Tests the successful fetch of Pokemon list, ensuring data mapping is correct
+    /// This is critical for the main list view to display correctly
     func testFetchPokemonList_Success() async throws {
         // Given
         let expectedResponse = PokemonListResponse(
@@ -47,7 +50,8 @@ final class NetworkManagerTests: XCTestCase {
         XCTAssertEqual(mockAPIService.fetchPokemonListCallCount, 1)
     }
     
-    /// Test Pokemon list fetch with NetworkError
+    /// Tests how NetworkManager handles service errors during list fetch
+    /// This verifies our error propagation from service to UI
     func testFetchPokemonList_NetworkError() async {
         // Given
         let expectedError = NetworkError.serverError
@@ -64,7 +68,8 @@ final class NetworkManagerTests: XCTestCase {
         }
     }
     
-    /// Test Pokemon list fetch with other error that gets mapped
+    /// Tests error mapping from unknown errors to NetworkError
+    /// This ensures we never propagate non-NetworkError types to the UI layer
     func testFetchPokemonList_OtherErrorMappedToNetworkError() async {
         // Given
         mockAPIService.shouldThrowOtherError = true
@@ -75,7 +80,7 @@ final class NetworkManagerTests: XCTestCase {
             XCTFail("Should have thrown an error")
         } catch let error as NetworkError {
             if case .unknown = error {
-                // This is expected
+                // This is expected - we want to normalize errors
             } else {
                 XCTFail("Error should be mapped to NetworkError.unknown")
             }
@@ -85,7 +90,10 @@ final class NetworkManagerTests: XCTestCase {
         }
     }
     
-    /// Test successful Pokemon detail fetch
+    // MARK: - Pokemon Detail Fetch Tests
+    
+    /// Tests successful fetch of individual Pokemon details
+    /// Critical for the detail view that shows more information about a selected Pokemon
     func testFetchPokemonDetail_Success() async throws {
         // Given
         let expectedPokemon = Pokemon(
@@ -111,7 +119,8 @@ final class NetworkManagerTests: XCTestCase {
         XCTAssertEqual(mockAPIService.lastPokemonDetailID, 1)
     }
     
-    /// Test Pokemon detail fetch with NetworkError
+    /// Tests error handling during Pokemon detail fetch
+    /// Important for proper error presentation on the detail screen
     func testFetchPokemonDetail_NetworkError() async {
         // Given
         let expectedError = NetworkError.timeout
@@ -129,7 +138,8 @@ final class NetworkManagerTests: XCTestCase {
         }
     }
     
-    /// Test Pokemon detail fetch with other error that gets mapped
+    /// Tests error normalization during Pokemon detail fetch
+    /// Ensures consistent error handling throughout the app
     func testFetchPokemonDetail_OtherErrorMappedToNetworkError() async {
         // Given
         mockAPIService.shouldThrowOtherError = true
@@ -140,7 +150,7 @@ final class NetworkManagerTests: XCTestCase {
             XCTFail("Should have thrown an error")
         } catch let error as NetworkError {
             if case .unknown = error {
-                // This is expected
+                // Expected behavior - normalizing unknown errors
             } else {
                 XCTFail("Error should be mapped to NetworkError.unknown")
             }
@@ -151,7 +161,10 @@ final class NetworkManagerTests: XCTestCase {
         }
     }
     
-    /// Test cancel all requests
+    // MARK: - Cleanup Tests
+    
+    /// Tests that the request cancellation propagates to the underlying service
+    /// Critical for preventing memory leaks when views are dismissed
     func testCancelAllRequests() {
         // When
         sut.cancelAllRequests()
@@ -160,7 +173,8 @@ final class NetworkManagerTests: XCTestCase {
         XCTAssertTrue(mockAPIService.cancelAllRequestsCalled)
     }
     
-    /// Test initialization with custom URL
+    /// Tests custom URL initialization to ensure we can point to different APIs
+    /// Important for development, staging and testing environments
     func testInitWithBaseURL() {
         // Given
         let baseURL = "https://custom-api.example.com"
@@ -175,7 +189,7 @@ final class NetworkManagerTests: XCTestCase {
 
 // MARK: - Test Helpers
 
-/// Mock PokemonAPIService for testing NetworkManager
+/// Mock implementation of PokemonAPIService for isolating NetworkManager tests
 class MockPokemonAPIService: PokemonAPIServiceProtocol {
     var mockPokemonList: PokemonListResponse?
     var mockPokemonDetail: Pokemon?

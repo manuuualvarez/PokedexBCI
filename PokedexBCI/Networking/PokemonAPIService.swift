@@ -1,7 +1,9 @@
 import Foundation
 import Combine
 
-/// Protocol defining the interface for Pokémon API operations
+// MARK: - Protocols
+
+/// Protocol defining the API operations for Pokémon data
 public protocol PokemonAPIServiceProtocol {
     /// Fetches a list of Pokémon with pagination
     /// - Parameter limit: Maximum number of Pokémon to fetch (default: 151)
@@ -17,7 +19,7 @@ public protocol PokemonAPIServiceProtocol {
     func cancelAllRequests()
 }
 
-// Define protocols for type safety
+/// Protocol for objects that can be cancelled
 public protocol TaskCancellable {
     func cancel()
 }
@@ -25,7 +27,9 @@ public protocol TaskCancellable {
 // Make Task conform to our TaskCancellable protocol
 extension Task: TaskCancellable {}
 
-/// Implementation of the Pokémon API service using HTTPClient
+// MARK: - API Service Implementation
+
+/// Implementation of the Pokémon API service
 final class PokemonAPIService: PokemonAPIServiceProtocol {
     
     // MARK: - Properties
@@ -42,7 +46,7 @@ final class PokemonAPIService: PokemonAPIServiceProtocol {
         self.baseURL = baseURL
     }
     
-    // MARK: - Public methods
+    // MARK: - Public API Methods
     
     public func fetchPokemonList(limit: Int = 151) async throws -> PokemonListResponse {
         guard let url = URL(string: "\(baseURL)/pokemon?limit=\(limit)") else {
@@ -102,7 +106,7 @@ final class PokemonAPIService: PokemonAPIServiceProtocol {
         print("🚫 All API requests cancelled")
     }
     
-    // MARK: - Private methods
+    // MARK: - Task Management
     
     private func registerTask<T>(_ task: Task<T, Error>, id: UUID) {
         taskLock.lock()
