@@ -75,7 +75,7 @@ The project prioritizes code quality through comprehensive testing:
 ### Installation
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/pokedex-bci.git
+   git clone https://github.com/manuuualvarez/PokedexBCI.git
    cd pokedex-bci
    ```
 
