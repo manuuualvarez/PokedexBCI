@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		FE538B9B2D8CC07300F1A473 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FE538B9A2D8CC07300F1A473 /* SnapKit */; };
 		FE538BD32D8CE49500F1A473 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FE538BD22D8CE49500F1A473 /* Kingfisher */; };
+		FE804E3A2D8F994B00147273 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = FE804E392D8F994B00147273 /* InlineSnapshotTesting */; };
+		FE804E3C2D8F994B00147273 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = FE804E3B2D8F994B00147273 /* SnapshotTesting */; };
+		FE804E3E2D8F994B00147273 /* SnapshotTestingCustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = FE804E3D2D8F994B00147273 /* SnapshotTestingCustomDump */; };
 		FEB789E02BB1B6E5003D6A2F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = FEB789DE2BB1B6DB003D6A2F /* SnapKit */; };
 		FEB789E12BB1B6E8003D6A2F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FEB789DF2BB1B6E0003D6A2F /* Kingfisher */; };
 /* End PBXBuildFile section */
@@ -82,6 +85,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				FEB789E02BB1B6E5003D6A2F /* SnapKit in Frameworks */,
+				FE804E3E2D8F994B00147273 /* SnapshotTestingCustomDump in Frameworks */,
+				FE804E3C2D8F994B00147273 /* SnapshotTesting in Frameworks */,
+				FE804E3A2D8F994B00147273 /* InlineSnapshotTesting in Frameworks */,
 				FEB789E12BB1B6E8003D6A2F /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,6 +169,9 @@
 			packageProductDependencies = (
 				FEB789DE2BB1B6DB003D6A2F /* SnapKit */,
 				FEB789DF2BB1B6E0003D6A2F /* Kingfisher */,
+				FE804E392D8F994B00147273 /* InlineSnapshotTesting */,
+				FE804E3B2D8F994B00147273 /* SnapshotTesting */,
+				FE804E3D2D8F994B00147273 /* SnapshotTestingCustomDump */,
 			);
 			productName = "pokedex-pciTests";
 			productReference = FE538B772D8CBF2300F1A473 /* pokedex-pciTests.xctest */;
@@ -226,6 +235,7 @@
 			packageReferences = (
 				FE538B992D8CC07300F1A473 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				FE538BD12D8CE49500F1A473 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				FE804E382D8F994B00147273 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FE538B622D8CBF2200F1A473 /* Products */;
@@ -604,6 +614,14 @@
 				minimumVersion = 8.3.1;
 			};
 		};
+		FE804E382D8F994B00147273 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.18.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -616,6 +634,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FE538BD12D8CE49500F1A473 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		FE804E392D8F994B00147273 /* InlineSnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE804E382D8F994B00147273 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = InlineSnapshotTesting;
+		};
+		FE804E3B2D8F994B00147273 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE804E382D8F994B00147273 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+		FE804E3D2D8F994B00147273 /* SnapshotTestingCustomDump */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE804E382D8F994B00147273 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTestingCustomDump;
 		};
 		FEB789DE2BB1B6DB003D6A2F /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

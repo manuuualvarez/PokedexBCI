@@ -27,13 +27,7 @@ final class PokemonListViewController: UIViewController {
     }()
     
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 16
-        layout.minimumLineSpacing = 16
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        
-        let itemWidth = (UIScreen.main.bounds.width - 48) / 2
-        layout.itemSize = CGSize(width: itemWidth, height: itemWidth * 1.2)
+        let layout = createCollectionViewLayout()
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
@@ -83,11 +77,27 @@ final class PokemonListViewController: UIViewController {
         setupCollectionView()
         setupBindings()
         title = "Pokédex"
+        
+        // Register for trait changes using the modern API
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self]) { (viewController: PokemonListViewController, _) in
+            viewController.collectionView.collectionViewLayout = viewController.createCollectionViewLayout()
+            viewController.collectionView.collectionViewLayout.invalidateLayout()
+        }
+        
         Task {
             await viewModel.fetchPokemon()
         }
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         
+        coordinator.animate { [weak self] context in
+            self?.collectionView.collectionViewLayout = self?.createCollectionViewLayout(for: size) ?? UICollectionViewFlowLayout()
+            self?.collectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
     // MARK: - Bindings
     /// Setup Combine publishers to observe the pokemon data
     /// Note: We use [weak self] in these closures because:
@@ -220,6 +230,75 @@ final class PokemonListViewController: UIViewController {
             }
         })
         present(alert, animated: true)
+    }
+    
+    private func createCollectionViewLayout() -> UICollectionViewLayout {
+        return createCollectionViewLayout(for: view.bounds.size)
+    }
+    
+    private func createCollectionViewLayout(for size: CGSize) -> UICollectionViewLayout {
+        let layout = UICollectionViewFlowLayout()
+        
+        let isIPad = UIDevice.current.userInterfaceIdiom == .pad
+        
+        // Determine orientation based on interface orientation rather than just width/height
+        var isLandscape = false
+        if let window = view.window, let windowScene = window.windowScene {
+            isLandscape = windowScene.interfaceOrientation.isLandscape
+        } else {
+            // Fallback to size comparison if we can't get the interface orientation
+            isLandscape = size.width > size.height
+        }
+        
+        // Configure layout properties based on device/orientation
+        if isIPad {
+            layout.minimumInteritemSpacing = 20
+            layout.minimumLineSpacing = 20
+            layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        } else if isLandscape {
+            // iPhone landscape - more generous spacing
+            layout.minimumInteritemSpacing = 16
+            layout.minimumLineSpacing = 16
+            layout.sectionInset = UIEdgeInsets(top: 16, left: 24, bottom: 16, right: 24)
+        } else {
+            // iPhone portrait - more modern insets
+            layout.minimumInteritemSpacing = 12
+            layout.minimumLineSpacing = 16
+            layout.sectionInset = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
+        }
+        
+        // Determine number of columns
+        let numberOfColumns: CGFloat
+        if isIPad {
+            numberOfColumns = 3
+        } else {
+            // iPhone
+            numberOfColumns = isLandscape ? 2 : 1
+        }
+        
+        // Calculate cell dimensions
+        let spacing: CGFloat = layout.minimumInteritemSpacing
+        let insets: CGFloat = layout.sectionInset.left + layout.sectionInset.right
+        let availableWidth = size.width - insets - (spacing * (numberOfColumns - 1))
+        let itemWidth = availableWidth / numberOfColumns
+        
+        // Adjust height ratio for different layouts
+        let heightRatio: CGFloat
+        if !isIPad && !isLandscape {
+            // iPhone portrait - shorter cells
+            heightRatio = 0.6
+        } else if !isIPad && isLandscape {
+            // iPhone landscape - shorter, wider cells
+            heightRatio = 0.6
+        } else {
+            // iPad - use same compact ratio as iPhone
+            heightRatio = 0.7
+        }
+        
+        let itemHeight = itemWidth * heightRatio
+        
+        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        return layout
     }
 }
 
