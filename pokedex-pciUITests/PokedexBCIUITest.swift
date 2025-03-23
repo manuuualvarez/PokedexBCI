@@ -8,7 +8,7 @@
 import XCTest
 @testable import pokedex_pci
 
-final class BasicsUITest: XCTestCase {
+final class PokedexAppUITest: XCTestCase {
     
     var app: XCUIApplication!
     

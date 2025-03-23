@@ -421,6 +421,11 @@ class MockPokemonListViewModel: PokemonListViewModelProtocol, ObservableObject {
         // No-op in mock - we don't need to actually load from cache
     }
     
+    func cancelAllRequests() {
+        // No-op in mock - we don't have any actual network requests to cancel
+        print("🧪 MockPokemonListViewModel: cancelAllRequests called (no-op)")
+    }
+    
     private func filterPokemon(with query: String) {
         if query.isEmpty {
             // When search is empty, show all Pokemon

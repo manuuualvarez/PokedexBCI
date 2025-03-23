@@ -230,6 +230,13 @@ public class TestNetworkManager: NetworkManagerProtocol {
         return try dataProvider.providePokemonDetail(id: id)
     }
     
+    /// Cancels all ongoing network requests
+    /// This is a no-op in the test implementation, as there are no actual network requests to cancel
+    public func cancelAllRequests() {
+        print("🧪 Test environment: cancelAllRequests() called")
+        // No-op in test environment
+    }
+    
     // MARK: - Helper Methods for Unit Tests
     
     /// Factory method to create a failing manager

@@ -8,6 +8,8 @@
 import Foundation
 import Combine
 import SwiftData
+// Import LocalizedError explicitly
+import Foundation.NSError
 
 /// Protocol defining the interface for PokemonListViewModel
 @MainActor
@@ -29,6 +31,7 @@ protocol PokemonListViewModelProtocol: ObservableObject {
     func setState(_ state: PokemonListState)
     func cachePokemon(_ pokemon: [Pokemon]) async
     func loadCachedPokemon() async
+    func cancelAllRequests()
 }
 
 /// Represents the different states of the Pokemon list
@@ -68,6 +71,7 @@ enum PokemonListState: Equatable {
 /// - Reduced network usage
 /// - Better performance
 /// - Automatic cache refresh after 15 minutes
+/// - Robust error handling and retry capabilities
 ///
 @MainActor
 final class PokemonListViewModel: PokemonListViewModelProtocol {
@@ -93,6 +97,9 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
     private let cacheLoadingStrategy: CacheLoadingStrategy
     private var isLoading = false
     
+    // Regular stored property for the fetch task
+    private var fetchTask: Task<Void, Never>?
+    
     // MARK: - Initialization:
     
     init(modelContainer: ModelContainer, 
@@ -109,6 +116,12 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
                 await loadCachedPokemon()
             }
         }
+    }
+    
+    deinit {
+        // Cancel all requests when this view model is deallocated
+        fetchTask?.cancel()
+        networkManager.cancelAllRequests()
     }
     
     // MARK: - Protocol Methods
@@ -246,8 +259,37 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
     }
     
     // MARK: - Public Methods:
+    /// Cancels all ongoing network requests
+    /// This is important for memory management and preventing unwanted updates
+    /// when the view is no longer visible or the viewmodel is being deallocated
+    func cancelAllRequests() {
+        // Cancel active fetch task
+        fetchTask?.cancel()
+        fetchTask = nil
+        
+        // Cancel ongoing network requests
+        networkManager.cancelAllRequests()
+        
+        // Update state if we're still loading
+        if case .loading = state {
+            if !pokemon.isEmpty {
+                // If we have some data, show it
+                state = .loaded(pokemon)
+            } else {
+                // Otherwise just go back to idle
+                state = .idle
+            }
+        }
+        
+        isLoading = false
+        print("🚫 All requests cancelled")
+    }
+    
     /// Fetches Pokemon data from the network
     func fetchPokemon() async {
+        // Cancel any existing tasks before starting a new one
+        cancelAllRequests()
+        
         guard !isLoading else {
             print("⚠️ Network fetch already in progress")
             return
@@ -256,48 +298,139 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
         isLoading = true
         state = .loading(progress: 0, total: 151)
         
-        do {
-            let response = try await networkManager.fetchPokemonList()
-            print("📥 Fetched Pokemon list with \(response.results.count) entries")
-    
-            var loadedPokemon: [Pokemon] = []
-            let total = response.results.count
-            
-            for (index, _ ) in response.results.enumerated() {
-                do {
-                    let pokemon = try await networkManager.fetchPokemonDetail(id: index + 1)
-                    loadedPokemon.append(pokemon)
-                    let progress = loadedPokemon.count
-                    state = .loading(progress: progress, total: total)
-                } catch {
-                    print("❌ Error fetching Pokemon #\(index + 1): \(error.localizedDescription)")
+        // Create a new task for this fetch operation
+        fetchTask = Task {
+            do {
+                // Try up to 2 times if the error is retryable
+                let maxRetries = 1 // One retry attempt (2 total attempts)
+                var lastError: Error? = nil
+                
+                for attempt in 0...maxRetries {
+                    do {
+                        // Break immediately if task was cancelled
+                        if Task.isCancelled {
+                            isLoading = false
+                            return
+                        }
+                        
+                        if attempt > 0 {
+                            print("🔄 Retry attempt \(attempt) for Pokemon list fetch")
+                            // Add a small delay before retry
+                            try await Task.sleep(nanoseconds: 500_000_000) // 0.5 second delay
+                        }
+                        
+                        let response = try await networkManager.fetchPokemonList()
+                        print("📥 Fetched Pokemon list with \(response.results.count) entries")
+                
+                        // Check if task was cancelled after fetching the list
+                        if Task.isCancelled {
+                            isLoading = false
+                            return
+                        }
+                        
+                        var loadedPokemon: [Pokemon] = []
+                        let total = response.results.count
+                        
+                        for (index, _ ) in response.results.enumerated() {
+                            // Check if our task was cancelled in the middle of fetching
+                            if Task.isCancelled {
+                                isLoading = false
+                                return
+                            }
+                            
+                            do {
+                                let pokemon = try await networkManager.fetchPokemonDetail(id: index + 1)
+                                loadedPokemon.append(pokemon)
+                                let progress = loadedPokemon.count
+                                state = .loading(progress: progress, total: total)
+                            } catch let error as NetworkError {
+                                print("❌ Error fetching Pokemon #\(index + 1): \(error.userMessage)")
+                                // Continue loading others even if one fails
+                            } catch {
+                                // Handle localized errors or any other errors
+                                if let errorMsg = (error as? LocalizedError)?.errorDescription {
+                                    print("❌ Error fetching Pokemon #\(index + 1): \(errorMsg)")
+                                } else {
+                                    print("❌ Unknown error fetching Pokemon #\(index + 1): \(error.localizedDescription)")
+                                }
+                                // Continue loading others even if one fails
+                            }
+                        }
+                        
+                        // Final check for cancellation before processing results
+                        if Task.isCancelled {
+                            isLoading = false
+                            return
+                        }
+                        
+                        loadedPokemon.sort { $0.id < $1.id }
+                        pokemon = loadedPokemon
+                        filteredPokemon = loadedPokemon
+                        
+                        if loadedPokemon.isEmpty {
+                            state = .error("Failed to load Pokemon data")
+                        } else {
+                            print("🎉 Successfully loaded \(loadedPokemon.count) Pokemon")
+                            state = .loaded(loadedPokemon)
+                            await cachePokemon(loadedPokemon)
+                        }
+                        
+                        // If we successfully completed, break out of retry loop
+                        break
+                        
+                    } catch let error as NetworkError where error.isRetryable && attempt < maxRetries {
+                        // If error is retryable and we haven't used all our retries, continue to next attempt
+                        print("⚠️ Retryable network error: \(error.userMessage), will retry...")
+                        lastError = error
+                        continue
+                    } catch let error {
+                        // For non-retryable errors or if we've used all our retries, rethrow
+                        lastError = error
+                        throw error
+                    }
+                }
+            } catch let error as NetworkError {
+                // Handle specific network errors with user-friendly messages
+                print("❌ Network error: \(error.userMessage)")
+                state = .error(error.userMessage)
+            } catch {
+                // Handle localized errors first (including TestNetworkError)
+                if let localizedError = error as? LocalizedError, 
+                   let errorDescription = localizedError.errorDescription {
+                    print("❌ Localized error: \(errorDescription)")
+                    state = .error(errorDescription)
+                } else {
+                    // Last resort - any other non-localized errors
+                    print("❌ Unexpected error: \(error.localizedDescription)")
+                    state = .error("An unexpected error occurred. Please try again.")
                 }
             }
-            loadedPokemon.sort { $0.id < $1.id }
-            pokemon = loadedPokemon
-            filteredPokemon = loadedPokemon
             
-            if loadedPokemon.isEmpty {
-                state = .error("Failed to load Pokemon data")
-            } else {
-                print("🎉 Successfully loaded \(loadedPokemon.count) Pokemon")
-                state = .loaded(loadedPokemon)
-                await cachePokemon(loadedPokemon)
-            }
-        } catch {
-            print("❌ Network error: \(error.localizedDescription)")
-            state = .error(error.localizedDescription)
+            isLoading = false
         }
-        
-        isLoading = false
     }
     
     /// Fetches detailed Pokemon information for a specific Pokemon
     /// - Parameter id: The Pokemon's ID
     /// - Returns: A Pokemon model with full details
-    /// - Note: Tested in `testFetchPokemonDetails` and `testFetchPokemonDetailsFailure`
     func fetchPokemonDetails(id: Int) async throws -> Pokemon {
         print("🔍 Fetching detailed information for Pokemon #\(id)...")
-        return try await networkManager.fetchPokemonDetail(id: id)
+        do {
+            return try await networkManager.fetchPokemonDetail(id: id)
+        } catch let error as NetworkError {
+            print("❌ Network error fetching Pokemon #\(id): \(error.userMessage)")
+            throw error
+        } catch {
+            // Handle any kind of localized error, including TestNetworkError
+            if let localizedError = error as? LocalizedError {
+                print("❌ Localized error fetching Pokemon #\(id): \(localizedError.errorDescription ?? "")")
+                throw error // Preserve original error for test pattern matching
+            } else {
+                // Map unknown errors to NetworkError as a last resort
+                let networkError = NetworkError.mapError(error)
+                print("❌ Error fetching Pokemon #\(id): \(networkError.userMessage)")
+                throw networkError
+            }
+        }
     }
 }

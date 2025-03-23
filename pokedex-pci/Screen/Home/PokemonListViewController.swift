@@ -89,6 +89,18 @@ final class PokemonListViewController: UIViewController {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // If we're popping back to a previous screen or the view controller 
+        // is being dismissed, cancel all network requests to prevent memory leaks
+        if isMovingFromParent || isBeingDismissed {
+            viewModel.cancelAllRequests()
+        }
+        
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         

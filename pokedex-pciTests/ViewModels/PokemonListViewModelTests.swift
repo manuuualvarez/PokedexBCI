@@ -133,21 +133,24 @@ final class PokemonListViewModelTests: XCTestCase {
         
         // Setup test dependencies
         let networkManager = CustomDetailNetworkManager(mockDetail: mockPokemon, shouldSucceed: true, customList: customResponse)
-        let sut = PokemonListViewModel(
+        let testViewModel = PokemonListViewModel(
             modelContainer: Self.modelContainer,
             networkManager: networkManager,
             cacheLoadingStrategy: TestCacheStrategy()
         )
         
         // Act
-        await sut.fetchPokemon()
+        await testViewModel.fetchPokemon()
+        
+        // Add delay to ensure async operations complete
+        try await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
         
         // Assert
-        if case .loaded(let pokemonList) = sut.state {
+        if case .loaded(let pokemonList) = testViewModel.state {
             XCTAssertEqual(pokemonList.count, customResponse.results.count)
             XCTAssertEqual(pokemonList.first?.name, customResponse.results.first?.name)
         } else {
-            XCTFail("Expected loaded state but got \(sut.state)")
+            XCTFail("Expected loaded state but got \(testViewModel.state)")
         }
     }
     
@@ -214,20 +217,40 @@ final class PokemonListViewModelTests: XCTestCase {
     /// Helper to wait for loaded state
     @MainActor
     private func waitForLoadedState(timeout: TimeInterval = 5.0) async -> [Pokemon]? {
-        let (pokemonArray, _) = await waitForState({ state in
-            if case .loaded(let pokemon) = state { return pokemon }
-            return nil
-        }, description: "Wait for loaded state", timeout: timeout)
-        return pokemonArray
+        let expectation = XCTestExpectation(description: "Wait for loaded state")
+        var loadedPokemon: [Pokemon]? = nil
+        
+        let cancellable = sut.$state
+            .sink { state in
+                if case .loaded(let pokemon) = state {
+                    loadedPokemon = pokemon
+                    expectation.fulfill()
+                }
+            }
+        
+        await fulfillment(of: [expectation], timeout: timeout)
+        cancellable.cancel()
+        
+        return loadedPokemon
     }
     
     /// Helper to wait for error state
     @MainActor
     private func waitForErrorState(timeout: TimeInterval = 5.0) async -> String? {
-        let (errorMessage, _) = await waitForState({ state in
-            if case .error(let message) = state { return message }
-            return nil
-        }, description: "Wait for error state", timeout: timeout)
+        let expectation = XCTestExpectation(description: "Wait for error state")
+        var errorMessage: String? = nil
+        
+        let cancellable = sut.$state
+            .sink { state in
+                if case .error(let message) = state {
+                    errorMessage = message
+                    expectation.fulfill()
+                }
+            }
+        
+        await fulfillment(of: [expectation], timeout: timeout)
+        cancellable.cancel()
+        
         return errorMessage
     }
     
@@ -914,6 +937,152 @@ final class PokemonListViewModelTests: XCTestCase {
         XCTAssertEqual(networkSpy.fetchPokemonListCallCount, 1, 
                        "Should have called fetchPokemonList exactly once, indicating guard condition worked")
     }
+    
+    // MARK: - Error Handling Tests
+    // Tests to verify error handling and error propagation
+
+    /// Test specific network error propagation
+    @MainActor
+    func testNetworkErrorPropagation() async throws {
+        // Given
+        try await resetViewModelState()
+        
+        // Create a mock network manager that throws specific network errors
+        let networkErrorTypes: [(error: NetworkError, expectedMessage: String)] = [
+            (.invalidURL, "Invalid URL. Please contact technical support."),
+            (.noInternet, "No internet connection. Please check your connection and try again."),
+            (.timeout, "Request timed out. Please try again later."),
+            (.serverError, "Server error. Please try again later."),
+            (.noData, "No data received from server."),
+            (.requestFailed(statusCode: 404), "Request failed with status code 404. Please try again later."),
+            (.decodingFailed(description: "Test"), "Could not process server response.")
+        ]
+        
+        // Test each error type
+        for (networkError, expectedMessage) in networkErrorTypes {
+            // Create mock network manager that throws the specific error
+            let errorManager = NetworkErrorTestManager(specificError: networkError)
+            
+            // Create a dedicated expectation for this error test
+            let expectation = XCTestExpectation(description: "Waiting for error state: \(networkError)")
+            
+            // Create a new view model with this error manager
+            let errorViewModel = PokemonListViewModel(
+                modelContainer: Self.modelContainer,
+                networkManager: errorManager,
+                cacheLoadingStrategy: TestCacheStrategy()
+            )
+            
+            // Subscribe to state changes to detect when we reach error state
+            var stateObserver: AnyCancellable?
+            stateObserver = errorViewModel.$state.sink { state in
+                if case .error(let message) = state {
+                    // When we get an error state, fulfill expectation and check message
+                    XCTAssertEqual(message, expectedMessage, "Error message should match for \(networkError)")
+                    expectation.fulfill()
+                }
+            }
+            
+            // When - fetch pokemon which will trigger the error
+            Task {
+                await errorViewModel.fetchPokemon()
+            }
+            
+            // Wait for the error state
+            await fulfillment(of: [expectation], timeout: 5.0)
+            
+            // Clean up
+            stateObserver?.cancel()
+        }
+    }
+    
+    /// Test TestNetworkError propagation for backwards compatibility
+    @MainActor
+    func testTestNetworkErrorPropagation() async throws {
+        // Given
+        try await resetViewModelState()
+        
+        // Create test network errors to try
+        let testErrors: [(error: TestNetworkError, expectedMessage: String)] = [
+            (.configuredError, "A test error occurred."),
+            (.connectionFailed("Test connection failed"), "Test connection failed"),
+            (.serverError("Test server error"), "Test server error"),
+            (.invalidResponse, "Invalid server response")
+        ]
+        
+        for (testError, expectedMessage) in testErrors {
+            // Create a mock network manager that throws the specific test error
+            let errorManager = TestErrorManager(specificError: testError)
+            
+            // Create a new view model with this error manager
+            let errorViewModel = PokemonListViewModel(
+                modelContainer: Self.modelContainer,
+                networkManager: errorManager,
+                cacheLoadingStrategy: TestCacheStrategy()
+            )
+            
+            // When - fetch pokemon which will trigger the error
+            await errorViewModel.fetchPokemon()
+            
+            // Add delay to ensure async operations complete
+            try await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+            
+            // Then - verify the error state and message
+            if case .error(let message) = errorViewModel.state {
+                XCTAssertEqual(message, expectedMessage, "Error message should match for \(testError)")
+            } else {
+                XCTFail("Expected error state for \(testError), got \(errorViewModel.state)")
+            }
+        }
+    }
+    
+    /// Test retry behavior for retryable errors
+    @MainActor
+    func testRetryBehavior() async throws {
+        // Given
+        try await resetViewModelState()
+        
+        // Create a network manager that fails initially then succeeds
+        let retryManager = RetryTestNetworkManager()
+        
+        // Replace SUT with one using our retry manager
+        sut = PokemonListViewModel(
+            modelContainer: Self.modelContainer,
+            networkManager: retryManager,
+            cacheLoadingStrategy: TestCacheStrategy()
+        )
+        
+        // Create longer expectation timeout for the retry test
+        let expectation = XCTestExpectation(description: "Retry test completed")
+        expectation.assertForOverFulfill = false
+        
+        // When - fetch pokemon which will trigger the retry logic
+        Task {
+            await sut.fetchPokemon()
+            
+            // Give the task time to properly run through the retry
+            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+            
+            expectation.fulfill()
+        }
+        
+        // Wait for the operation to complete
+        await fulfillment(of: [expectation], timeout: 10.0)
+        
+        // Give a little more time for processing
+        try await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+        
+        // Then - verify we have data
+        XCTAssertEqual(retryManager.fetchCallCount, 2, 
+                    "Should have called fetchPokemonList twice (initial failure + success)")
+        
+        // Check if we have Pokemon loaded (should be loaded if retry succeeded)
+        if case .loaded(let pokemon) = sut.state {
+            XCTAssertFalse(pokemon.isEmpty, "Should have Pokemon after retries")
+        } else {
+            XCTFail("Expected .loaded state after retry, got \(sut.state)")
+        }
+    }
 }
 
 // MARK: - Custom Network Managers for Testing
@@ -923,6 +1092,7 @@ class CustomDetailNetworkManager: NetworkManagerProtocol {
     var mockDetail: Pokemon
     var shouldSucceed: Bool
     var customPokemonList: PokemonListResponse?
+    var cancelAllRequestsCalled = false
     
     init(mockDetail: Pokemon, shouldSucceed: Bool = true, customList: PokemonListResponse? = nil) {
         self.mockDetail = mockDetail
@@ -954,6 +1124,12 @@ class CustomDetailNetworkManager: NetworkManagerProtocol {
         }
         return mockDetail
     }
+    
+    /// Cancels all ongoing network requests - mock implementation for testing
+    func cancelAllRequests() {
+        cancelAllRequestsCalled = true
+        print("🧪 CustomDetailNetworkManager: cancelAllRequests called")
+    }
 }
 
 /// Network manager that fails for specific Pokemon (even-numbered IDs)
@@ -976,12 +1152,157 @@ class AllFailNetworkManager: TestNetworkManager {
 /// Network manager that tracks calls for testing guard conditions
 class NetworkManagerSpy: TestNetworkManager {
     var fetchPokemonListCallCount = 0
+    var cancelAllRequestsCallCount = 0
+    var fetchPokemonDetailCallCount = 0
+    var isInProgress = false
     
     override func fetchPokemonList() async throws -> PokemonListResponse {
         fetchPokemonListCallCount += 1
+        isInProgress = true
+        
         // Add a small delay to ensure we have time to test the guard condition
-        try await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
-        return try await super.fetchPokemonList()
+        do {
+            // Sleep long enough for the test to be able to cancel
+            try await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+            
+            // Check if we've been cancelled during the sleep
+            if Task.isCancelled || !isInProgress {
+                // If cancelled, throw a cancellation error
+                throw CancellationError()
+            }
+            
+            isInProgress = false
+            return try await super.fetchPokemonList()
+        } catch is CancellationError {
+            // Handle cancellation by throwing an expected error
+            isInProgress = false
+            throw CancellationError()
+        } catch {
+            isInProgress = false
+            throw error
+        }
+    }
+    
+    override func fetchPokemonDetail(id: Int) async throws -> Pokemon {
+        fetchPokemonDetailCallCount += 1
+        return try await super.fetchPokemonDetail(id: id)
+    }
+    
+    override func cancelAllRequests() {
+        cancelAllRequestsCallCount += 1
+        isInProgress = false
+        super.cancelAllRequests()
+        print("🧪 NetworkManagerSpy: cancelAllRequests called (\(cancelAllRequestsCallCount) times)")
+    }
+}
+
+// MARK: - Additional Test Managers
+
+/// Network manager that returns specific Network Errors
+class NetworkErrorTestManager: NetworkManagerProtocol {
+    let specificError: NetworkError
+    
+    init(specificError: NetworkError) {
+        self.specificError = specificError
+    }
+    
+    func fetchPokemonList() async throws -> PokemonListResponse {
+        throw specificError
+    }
+    
+    func fetchPokemonDetail(id: Int) async throws -> Pokemon {
+        throw specificError
+    }
+    
+    func cancelAllRequests() {
+        // No-op for this test
+    }
+}
+
+/// Network manager that simulates retry behavior (fails once, then succeeds)
+class RetryTestNetworkManager: NetworkManagerProtocol {
+    var fetchCallCount = 0
+    private let dataProvider = DefaultMockDataProvider()
+    
+    func fetchPokemonList() async throws -> PokemonListResponse {
+        fetchCallCount += 1
+        print("🧪 RetryTestNetworkManager: fetchPokemonList call #\(fetchCallCount)")
+        
+        // Add some delay to simulate network latency
+        try await Task.sleep(nanoseconds: 100_000_000) // 0.1 second
+        
+        if fetchCallCount == 1 {
+            // First call fails with a retryable error
+            print("🧪 RetryTestNetworkManager: First call fails with timeout")
+            throw NetworkError.timeout
+        }
+        
+        // Subsequent calls succeed
+        print("🧪 RetryTestNetworkManager: Call #\(fetchCallCount) succeeds")
+        
+        let response = try dataProvider.providePokemonList()
+        // For test purposes, make sure we have a small number of Pokemon to load
+        let limitedResponse = PokemonListResponse(
+            count: 3,
+            results: Array(response.results.prefix(3))
+        )
+        return limitedResponse
+    }
+    
+    func fetchPokemonDetail(id: Int) async throws -> Pokemon {
+        // Always succeed for Pokemon details to simplify the test
+        try await Task.sleep(nanoseconds: 50_000_000) // 0.05 seconds
+        return try dataProvider.providePokemonDetail(id: id)
+    }
+    
+    func cancelAllRequests() {
+        // No-op for this test
+        print("🧪 RetryTestNetworkManager: cancelAllRequests called (no-op)")
+    }
+}
+
+/// Network manager that returns specific TestNetworkError
+class TestErrorManager: NetworkManagerProtocol {
+    let specificError: TestNetworkError
+    
+    init(specificError: TestNetworkError) {
+        self.specificError = specificError
+    }
+    
+    func fetchPokemonList() async throws -> PokemonListResponse {
+        throw specificError
+    }
+    
+    func fetchPokemonDetail(id: Int) async throws -> Pokemon {
+        throw specificError
+    }
+    
+    func cancelAllRequests() {
+        // No-op for this test
+    }
+}
+
+// MARK: - Additional Test Helpers
+
+/// Network manager that adds long delays for cancellation testing
+class DelayNetworkManager: NetworkManagerProtocol {
+    var cancelCalled = false
+    
+    func fetchPokemonList() async throws -> PokemonListResponse {
+        // Sleep for a long time to ensure the operation can be cancelled
+        try await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
+        return PokemonListResponse(count: 0, results: [])
+    }
+    
+    func fetchPokemonDetail(id: Int) async throws -> Pokemon {
+        // Sleep for a long time to ensure the operation can be cancelled
+        try await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
+        throw NetworkError.timeout // Should never reach this
+    }
+    
+    func cancelAllRequests() {
+        cancelCalled = true
+        print("🧪 DelayNetworkManager: cancelAllRequests called")
     }
 } 
 

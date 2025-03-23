@@ -12,6 +12,7 @@ class TestNetworkManager: NetworkManagerProtocol {
     var shouldSucceed: Bool = true
     var customPokemonList: PokemonListResponse?
     var customPokemonDetail: Pokemon?
+    var cancellationCalled = false
     
     init() {}
     
@@ -51,6 +52,13 @@ class TestNetworkManager: NetworkManagerProtocol {
         // Use DefaultMockDataProvider to get proper Pokémon with correct names
         return try DefaultMockDataProvider().providePokemonDetail(id: id)
     }
+    
+    /// Cancels all ongoing network requests
+    /// This is a mock implementation that sets a flag for testing purposes
+    func cancelAllRequests() {
+        cancellationCalled = true
+        print("🧪 TestNetworkManager: cancelAllRequests called")
+    }
 }
 
 // Define test-specific network errors
@@ -74,5 +82,10 @@ enum TestNetworkError: Error, LocalizedError {
         case .invalidResponse:
             return "Invalid server response"
         }
+    }
+    
+    // Add a userMessage for compatibility with NetworkError
+    var userMessage: String {
+        return errorDescription ?? "Unknown test error"
     }
 }

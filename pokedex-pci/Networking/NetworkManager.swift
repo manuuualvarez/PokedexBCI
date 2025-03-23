@@ -1,23 +1,45 @@
 import Foundation
 
-
 /// Network manager for handling Pokemon API requests
 final class NetworkManager: NetworkManagerProtocol {
-    private let baseURL: String
+    private let apiService: PokemonAPIServiceProtocol
     
     init(_ baseURL: String = "https://pokeapi.co/api/v2") {
-        self.baseURL = baseURL
+        self.apiService = PokemonAPIService(baseURL: baseURL)
+    }
+    
+    // For dependency injection in tests
+    init(apiService: PokemonAPIServiceProtocol) {
+        self.apiService = apiService
     }
     
     func fetchPokemonList() async throws -> PokemonListResponse {
-        let url = URL(string: "\(baseURL)/pokemon?limit=151")!
-        let (data, _) = try await URLSession.shared.data(from: url)
-        return try JSONDecoder().decode(PokemonListResponse.self, from: data)
+        do {
+            return try await apiService.fetchPokemonList(limit: 151)
+        } catch let error as NetworkError {
+            print("❌ Network error fetching Pokemon list: \(error.userMessage)")
+            throw error
+        } catch {
+            let networkError = NetworkError.mapError(error)
+            print("❌ Error fetching Pokemon list: \(networkError.userMessage)")
+            throw networkError
+        }
     }
     
     func fetchPokemonDetail(id: Int) async throws -> Pokemon {
-        let url = URL(string: "\(baseURL)/pokemon/\(id)")!
-        let (data, _) = try await URLSession.shared.data(from: url)
-        return try JSONDecoder().decode(Pokemon.self, from: data)
+        do {
+            return try await apiService.fetchPokemonDetail(id: id)
+        } catch let error as NetworkError {
+            print("❌ Network error fetching Pokemon detail #\(id): \(error.userMessage)")
+            throw error
+        } catch {
+            let networkError = NetworkError.mapError(error)
+            print("❌ Error fetching Pokemon detail #\(id): \(networkError.userMessage)")
+            throw networkError
+        }
+    }
+    
+    func cancelAllRequests() {
+        apiService.cancelAllRequests()
     }
 } 
